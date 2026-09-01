@@ -26,7 +26,10 @@ asr = ["faster-whisper>=1.0.0"]
 quality = ["torch>=2.0.0", "torchmetrics[audio]>=1.4.0"]
 similarity = ["speechbrain>=1.0.0"]
 aligner = ["stable-ts>=2.17.0"]
-dev = ["pytest>=8.0.0"]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.6.0",
+]
 all = [
     "faster-whisper>=1.0.0",
     "speechbrain>=1.0.0",
