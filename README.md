@@ -1,5 +1,6 @@
 # Inworld TTS Open Evaluation Toolkit
 
+[![CI](https://github.com/inworld-ai/open-tts-eval/actions/workflows/ci.yml/badge.svg)](https://github.com/inworld-ai/open-tts-eval/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg?logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![Typer 0.12+](https://img.shields.io/badge/typer-0.12%2B-009688.svg)](https://libraries.io/pypi/typer)
 [![JiWER 3.0+](https://img.shields.io/badge/jiwer-3.0%2B-white.svg)](https://libraries.io/pypi/jiwer)
