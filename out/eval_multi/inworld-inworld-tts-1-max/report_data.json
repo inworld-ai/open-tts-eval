@@ -1,11 +1,13 @@
 {
   "title": "TTS Assessment Report",
   "subtitle": "1000 samples",
+  "question": "How do these voices/models handle messy dialogue text?",
   "labels": [
     "inworld-inworld-tts-1-max"
   ],
   "metric_table": {
     "ci_label": "95% CI",
+    "ci_method": "cluster",
     "groups": [
       {
         "title": "Accuracy",
@@ -18,12 +20,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.02959856810168941,
-                "lo": 0.021257220426552887,
-                "hi": 0.03967609069906353,
+                "mean": 0.02613672203271184,
+                "lo": 0.013577885160455341,
+                "hi": 0.04366424704205434,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -34,12 +39,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.008367073712195664,
-                "lo": 0.0028509948131137156,
-                "hi": 0.016366696570705715,
+                "mean": 0.004707242757242758,
+                "lo": 0.0006185429154179158,
+                "hi": 0.011936237096237088,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -50,12 +58,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.0035329376505847097,
-                "lo": 0.002313734672190555,
-                "hi": 0.005049319879466938,
+                "mean": 0.0039921105031828,
+                "lo": 0.0014490280247255016,
+                "hi": 0.007041774870872789,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -66,12 +77,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.017698556738909032,
-                "lo": 0.014086316853548617,
-                "hi": 0.021648314449186808,
+                "mean": 0.017437368772286285,
+                "lo": 0.009499747976484459,
+                "hi": 0.027494027330899486,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -82,12 +96,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.014040834320943435,
-                "lo": 0.008777087910178914,
-                "hi": 0.021942089050532302,
+                "mean": 0.009897106703267369,
+                "lo": 0.005640411530869808,
+                "hi": 0.01581120884692634,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           }
@@ -104,12 +121,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 4.891714110612869,
-                "lo": 4.878435994458199,
-                "hi": 4.90403728274107,
+                "mean": 4.896760819673538,
+                "lo": 4.865992652994395,
+                "hi": 4.923035439187288,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -120,12 +140,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 4.521530269622803,
-                "lo": 4.513626507091522,
-                "hi": 4.528818640774489,
+                "mean": 4.552167023658752,
+                "lo": 4.536964419341087,
+                "hi": 4.5656660366415975,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -136,12 +159,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 4.830023786783219,
-                "lo": 4.8176557327449325,
-                "hi": 4.841448992300034,
+                "mean": 4.71844632935524,
+                "lo": 4.700156277406216,
+                "hi": 4.734788372921943,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -152,12 +178,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 4.611434384584427,
-                "lo": 4.6013057079076765,
-                "hi": 4.620828622758388,
+                "mean": 4.561911075592041,
+                "lo": 4.540999679106474,
+                "hi": 4.581062855118513,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -168,12 +197,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 4.570510303497314,
-                "lo": 4.5617590517580515,
-                "hi": 4.578698682069779,
+                "mean": 4.5349371178150175,
+                "lo": 4.51743051547408,
+                "hi": 4.549319367939234,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           }
@@ -191,11 +223,14 @@
               {
                 "na": false,
                 "mean": 15.14590160109048,
-                "lo": 14.971707642862892,
-                "hi": 15.314697408146968,
+                "lo": 14.721054516343713,
+                "hi": 15.567698548911657,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -207,11 +242,14 @@
               {
                 "na": false,
                 "mean": 0.09477152034718753,
-                "lo": 0.09396194483267803,
-                "hi": 0.09557138877646973,
+                "lo": 0.09332140323714458,
+                "hi": 0.09619180974520833,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -223,11 +261,14 @@
               {
                 "na": false,
                 "mean": 0.9606817772165416,
-                "lo": 0.9515962342383131,
-                "hi": 0.9700334239914087,
+                "lo": 0.9414430357320992,
+                "hi": 0.9803071884541742,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           }
@@ -244,12 +285,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.22948707912859373,
-                "lo": 0.22726678596750113,
-                "hi": 0.23183344947395723,
+                "mean": 0.2572267175561924,
+                "lo": 0.252206606721191,
+                "hi": 0.26232823227959773,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -260,12 +304,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.155776,
-                "lo": 0.14839466666666667,
-                "hi": 0.16371200000000002,
+                "mean": 0.16093866666666667,
+                "lo": 0.15398400000000004,
+                "hi": 0.16772373333333335,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -276,12 +323,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.19424666666666668,
-                "lo": 0.1876028666666667,
-                "hi": 0.20047943333333335,
+                "mean": 0.21714533333333333,
+                "lo": 0.20815419999999998,
+                "hi": 0.22615319999999997,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           }
@@ -300,8 +350,11 @@
         "cells": [
           {
             "na": false,
-            "good_rate": 0.999,
-            "status": "good"
+            "status": "good",
+            "good_rate": 0.998,
+            "measured": 1000,
+            "failed": 0,
+            "total": 1000
           }
         ]
       },
@@ -312,8 +365,11 @@
         "cells": [
           {
             "na": false,
+            "status": "good",
             "good_rate": 1.0,
-            "status": "good"
+            "measured": 1000,
+            "failed": 0,
+            "total": 1000
           }
         ]
       },
@@ -324,8 +380,41 @@
         "cells": [
           {
             "na": false,
-            "good_rate": 0.998,
-            "status": "good"
+            "status": "good",
+            "good_rate": 0.993,
+            "measured": 1000,
+            "failed": 0,
+            "total": 1000
+          }
+        ]
+      },
+      {
+        "metric": "empty transcript",
+        "key": "empty_transcript",
+        "pass_rule": "not flagged",
+        "cells": [
+          {
+            "na": false,
+            "status": "good",
+            "good_rate": 1.0,
+            "measured": 1000,
+            "failed": 0,
+            "total": 1000
+          }
+        ]
+      },
+      {
+        "metric": "repeated span",
+        "key": "repeated_span",
+        "pass_rule": "not flagged",
+        "cells": [
+          {
+            "na": false,
+            "status": "good",
+            "good_rate": 0.993,
+            "measured": 1000,
+            "failed": 0,
+            "total": 1000
           }
         ]
       },
@@ -336,56 +425,89 @@
         "cells": [
           {
             "na": false,
+            "status": "good",
             "good_rate": 0.998,
-            "status": "good"
+            "measured": 1000,
+            "failed": 0,
+            "total": 1000
+          }
+        ]
+      },
+      {
+        "metric": "tail hallucination",
+        "key": "tail_hallucination",
+        "pass_rule": "not flagged",
+        "cells": [
+          {
+            "na": false,
+            "status": "good",
+            "good_rate": 0.999,
+            "measured": 1000,
+            "failed": 0,
+            "total": 1000
           }
         ]
       },
       {
         "metric": "Vowel prolongation",
         "key": "vowel_prolongation_score",
-        "pass_rule": "≤ 0.8",
+        "pass_rule": "< 0.8",
         "cells": [
           {
             "na": false,
-            "good_rate": 0.99,
-            "status": "good"
+            "status": "warn",
+            "good_rate": 0.983,
+            "measured": 1000,
+            "failed": 0,
+            "total": 1000
           }
         ]
       }
     ]
   },
   "violations": {
-    "state": "268 violations across 7 metric(s).",
+    "state": "266 violations across 9 metric(s).",
     "counts": [
       {
         "metric": "WER",
-        "warn": 89,
-        "fail": 59,
-        "total": 148
+        "warn": 81,
+        "fail": 55,
+        "total": 136
       },
       {
         "metric": "CER",
-        "warn": 47,
-        "fail": 35,
-        "total": 82
-      },
-      {
-        "metric": "Insertions",
-        "warn": 5,
-        "fail": 13,
-        "total": 18
+        "warn": 57,
+        "fail": 22,
+        "total": 79
       },
       {
         "metric": "Vowel prolongation",
         "warn": 0,
-        "fail": 15,
+        "fail": 17,
+        "total": 17
+      },
+      {
+        "metric": "Insertions",
+        "warn": 6,
+        "fail": 9,
         "total": 15
       },
       {
-        "metric": "NISQA MOS",
+        "metric": "repeated span",
         "warn": 0,
-        "fail": 2,
+        "fail": 7,
+        "total": 7
+      },
+      {
+        "metric": "NISQA MOS",
+        "warn": 6,
+        "fail": 1,
+        "total": 7
+      },
+      {
+        "metric": "Silence",
+        "warn": 2,
+        "fail": 0,
         "total": 2
       },
       {
@@ -395,23 +517,15 @@
         "total": 2
       },
       {
-        "metric": "Silence",
-        "warn": 1,
-        "fail": 0,
+        "metric": "tail hallucination",
+        "warn": 0,
+        "fail": 1,
         "total": 1
       }
     ],
     "examples": {
       "has_audio": true,
       "rows": [
-        {
-          "metric": "WER",
-          "voice": "Miranda",
-          "value": "3.154",
-          "expected": "we buried the dog behind the shed the kids still leave it treats",
-          "heard": "we buried the dog behind the shed the kids still leave it treats we are not expecting to …",
-          "audio": "audio/Miranda__utt_0043.wav"
-        },
         {
           "metric": "WER",
           "voice": "Rosalind",
@@ -445,6 +559,14 @@
           "audio": "audio/Reed__utt_0000.wav"
         },
         {
+          "metric": "WER",
+          "voice": "Tessa",
+          "value": "1.333",
+          "expected": "esme esme wait",
+          "heard": "as me as me wait",
+          "audio": "audio/Tessa__utt_0000.wav"
+        },
+        {
           "metric": "CER",
           "voice": "Reed",
           "value": "0.481",
@@ -454,11 +576,11 @@
         },
         {
           "metric": "CER",
-          "voice": "Tessa",
+          "voice": "Miranda",
           "value": "0.286",
           "expected": "esme esme wait",
-          "heard": "as me as me wait",
-          "audio": "audio/Tessa__utt_0000.wav"
+          "heard": "esmay esmay wait",
+          "audio": "audio/Miranda__utt_0000.wav"
         },
         {
           "metric": "CER",
@@ -485,52 +607,12 @@
           "audio": "audio/Jarrah__utt_0010.wav"
         },
         {
-          "metric": "Insertions",
-          "voice": "Reed",
-          "value": "0.244",
-          "expected": "the town meeting ran past midnight everyone shouting over everyone until old pete stood u…",
-          "heard": "the town meeting ran past midnight everyone shouting over everyone until old pete stood u…",
-          "audio": "audio/Reed__utt_0093.wav"
-        },
-        {
-          "metric": "Insertions",
-          "voice": "Lauren",
-          "value": "0.2",
-          "expected": "she wrote her whole life into those notebooks forty of them stacked in the closet like br…",
-          "heard": "she wrote her whole life into those notebooks forty of them stacked in the closet like br…",
-          "audio": "audio/Lauren__utt_0081.wav"
-        },
-        {
-          "metric": "Insertions",
-          "voice": "Victor",
-          "value": "0.179",
-          "expected": "he used to read to us every night doing all the voices the wolf and the witch and the lit…",
-          "heard": "he used to read to us every night doing all the voices the wolf and the witch and the lit…",
-          "audio": "audio/Victor__utt_0079.wav"
-        },
-        {
-          "metric": "Insertions",
-          "voice": "Oliver",
-          "value": "0.159",
+          "metric": "Vowel prolongation",
+          "voice": "Avery",
+          "value": "1",
           "expected": "the way i heard it the meridian burned because somebody wanted it to insurance they whisp…",
           "heard": "the way i heard it the meridian burned because somebody wanted it to insurance they whisp…",
-          "audio": "audio/Oliver__utt_0096.wav"
-        },
-        {
-          "metric": "Insertions",
-          "voice": "Victor",
-          "value": "0.125",
-          "expected": "deputy reyes found the second body at dawn",
-          "heard": "deputy ray has found the second body at dawn",
-          "audio": "audio/Victor__utt_0024.wav"
-        },
-        {
-          "metric": "Vowel prolongation",
-          "voice": "Victor",
-          "value": "1",
-          "expected": "i keep a list you know everyone who ever laughed at me everyone who looked the other way …",
-          "heard": "i keep a list you know everyone who ever laughed at me everyone who looked the other way …",
-          "audio": "audio/Victor__utt_0083.wav"
+          "audio": "audio/Avery__utt_0096.wav"
         },
         {
           "metric": "Vowel prolongation",
@@ -542,11 +624,11 @@
         },
         {
           "metric": "Vowel prolongation",
-          "voice": "Miranda",
+          "voice": "Victor",
           "value": "0.95",
-          "expected": "cut to the boardroom vance stands at the head of the table knuckles white on the wood the…",
-          "heard": "cut to the boardroom vance stands at the head of the table knuckles white on the wood the…",
-          "audio": "audio/Miranda__utt_0090.wav"
+          "expected": "i keep a list you know everyone who ever laughed at me everyone who looked the other way …",
+          "heard": "i keep a list you know everyone who ever laughed at me everyone who looked the other way …",
+          "audio": "audio/Victor__utt_0083.wav"
         },
         {
           "metric": "Vowel prolongation",
@@ -558,43 +640,91 @@
         },
         {
           "metric": "Vowel prolongation",
-          "voice": "Rosalind",
-          "value": "0.9",
-          "expected": "your mother and i we tried god knows we tried kiddo",
-          "heard": "your mother and i we tried god knows we tried kiddo",
-          "audio": "audio/Rosalind__utt_0045.wav"
+          "voice": "Jarrah",
+          "value": "0.925",
+          "expected": "do not you dare hang that on me kessler",
+          "heard": "do not you dare hang that on me kessler",
+          "audio": "audio/Jarrah__utt_0025.wav"
+        },
+        {
+          "metric": "Insertions",
+          "voice": "Victor",
+          "value": "0.179",
+          "expected": "he used to read to us every night doing all the voices the wolf and the witch and the lit…",
+          "heard": "he used to read to us every night doing all the voices the wolf and the witch and the lit…",
+          "audio": "audio/Victor__utt_0079.wav"
+        },
+        {
+          "metric": "Insertions",
+          "voice": "Victor",
+          "value": "0.125",
+          "expected": "deputy reyes found the second body at dawn",
+          "heard": "deputy ray has found the second body at dawn",
+          "audio": "audio/Victor__utt_0024.wav"
+        },
+        {
+          "metric": "Insertions",
+          "voice": "Avery",
+          "value": "0.077",
+          "expected": "she said she would be back by nine it's almost midnight now tomas",
+          "heard": "she said she would be back by nine it's almost midnight now tom s",
+          "audio": "audio/Avery__utt_0031.wav"
+        },
+        {
+          "metric": "Insertions",
+          "voice": "Oliver",
+          "value": "0.056",
+          "expected": "the calloways moved in last spring all smiles and casseroles by fall the moving trucks we…",
+          "heard": "the calloways moved in last spring all smiles and casseroles by fall the moving trucks we…",
+          "audio": "audio/Oliver__utt_0077.wav"
+        },
+        {
+          "metric": "Insertions",
+          "voice": "Jarrah",
+          "value": "0.05",
+          "expected": "the recording cuts out right after the scream nine seconds of static then nothing we have…",
+          "heard": "the recording cuts out right after the scream nine seconds is static then nothing we have…",
+          "audio": "audio/Jarrah__utt_0064.wav"
+        },
+        {
+          "metric": "NISQA MOS",
+          "voice": "Tessa",
+          "value": "2.525",
+          "expected": "i saw the way he looked at her",
+          "heard": "i saw the way he looked at her",
+          "audio": "audio/Tessa__utt_0028.wav"
         },
         {
           "metric": "NISQA MOS",
           "voice": "Avery",
-          "value": "2.272",
+          "value": "2.8",
           "expected": "not now not now",
           "heard": "not now not now",
           "audio": "audio/Avery__utt_0001.wav"
         },
         {
           "metric": "NISQA MOS",
-          "voice": "Oliver",
-          "value": "2.626",
-          "expected": "you think this is a game it's not a game",
-          "heard": "you think this is a game it's not a game",
-          "audio": "audio/Oliver__utt_0014.wav"
+          "voice": "Victor",
+          "value": "3.113",
+          "expected": "it's freezing out here where the hell is roy",
+          "heard": "it's freezing out here where the hell is roy",
+          "audio": "audio/Victor__utt_0008.wav"
         },
         {
-          "metric": "tail click detected",
-          "voice": "Timothy",
-          "value": "flagged",
-          "expected": "the verdict came down on a tuesday by wednesday the reporters were gone and i was alone i…",
-          "heard": "the verdict came down on a tuesday by wednesday the reporters were gone and i was alone i…",
-          "audio": "audio/Timothy__utt_0073.wav"
+          "metric": "NISQA MOS",
+          "voice": "Tessa",
+          "value": "3.13",
+          "expected": "not now not now",
+          "heard": "not now not now",
+          "audio": "audio/Tessa__utt_0001.wav"
         },
         {
-          "metric": "tail click detected",
-          "voice": "Lauren",
-          "value": "flagged",
-          "expected": "he used to read to us every night doing all the voices the wolf and the witch and the lit…",
-          "heard": "he used to read to us every night doing all the voices the wolf and the witch and the lit…",
-          "audio": "audio/Lauren__utt_0079.wav"
+          "metric": "NISQA MOS",
+          "voice": "Victor",
+          "value": "3.24",
+          "expected": "the keys were in his coat the whole time the whole time",
+          "heard": "the keys were in his coat the whole time the whole time",
+          "audio": "audio/Victor__utt_0016.wav"
         }
       ]
     }

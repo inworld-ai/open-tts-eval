@@ -230,7 +230,7 @@ scripts/sample_multi.py        # reproducible multi-provider sampling
 scripts/eval_multi.py          # evaluate all runs in place + build compare_all
 data/…open_benchmak.en.json    # bundled benchmark dataset
 out/eval_multi/                # example evaluated runs + compare_all report (audio git-ignored);
-                               # produced by an EARLIER evaluator — regenerate before quoting numbers
+                               # stamped with their evaluator — regenerate when measurement code changes
 ```
 
 ## Gotchas
@@ -251,9 +251,10 @@ out/eval_multi/                # example evaluated runs + compare_all report (au
   editing reporting code does not. Failed optional metrics are never cached.
 - `compare` refuses runs scored by different ASR/normalizer/measurement code. Old runs without an
   `evaluator` stamp produce a warning; re-evaluate them rather than reasoning about mixed scores.
-- The checked-in `out/eval_multi/` results predate the reference-aware `repeated_span` rule and the
-  current silence / prolongation / NISQA definitions. Regenerate with `scripts/eval_multi.py` (needs
-  the audio and the `[asr,quality]` extras) before citing them.
+- The checked-in `out/eval_multi/` results are only valid for the code that produced them: compare
+  `summary.json["evaluator"]["code_hash"]` with `tts_assess.provenance.measurement_code_hash()`
+  before citing them, and regenerate with `scripts/eval_multi.py` (needs the audio and the
+  `[asr,quality]` extras) after any change to measurement code.
 
 ## Extending — add a provider
 

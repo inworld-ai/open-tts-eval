@@ -400,9 +400,11 @@ metric is retried on the next run.
 measurement code hash. Results from an older evaluator should be re-evaluated (the cache makes this
 cheap when only thresholds changed, and forces recomputation when measurement code changed).
 
-The example runs under `out/eval_multi/` were produced by an earlier evaluator (a transcript-only
-`repeated_span` rule and the previous silence, prolongation, and NISQA definitions). They document
-the report layout; regenerate them with `scripts/eval_multi.py` before quoting their numbers.
+The example runs under `out/eval_multi/` carry the stamp of the evaluator that produced them
+(`summary.json` → `evaluator`). Before quoting their numbers, check that `evaluator.code_hash`
+equals the current `tts_assess.provenance.measurement_code_hash()`; if measurement code changed
+since, regenerate them with `scripts/eval_multi.py` (needs the audio and the `[asr,quality]`
+extras).
 
 ## Report Design
 

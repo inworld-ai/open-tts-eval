@@ -27,4 +27,5 @@ tts-assess compare out/samples/<runA> out/samples/<runB> --label A --label B -o 
 - Every row carries an `evaluator` stamp (code hash, ASR, normalizer); `compare` refuses runs
   scored by different evaluators. Re-evaluate old runs instead of mixing them. Unmeasured clips
   (decode/ASR/model errors) count as failures and show as `n=…` coverage in reports.
-- `out/eval_multi/` results predate the current evaluator — regenerate before quoting numbers.
+- `out/eval_multi/` results carry an `evaluator` stamp; if its `code_hash` differs from the current
+  code, regenerate with `scripts/eval_multi.py` before quoting numbers.

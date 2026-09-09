@@ -1,11 +1,13 @@
 {
   "title": "TTS Assessment Report",
   "subtitle": "1000 samples",
+  "question": "How do these voices/models handle messy dialogue text?",
   "labels": [
     "inworld-inworld-tts-2-preview"
   ],
   "metric_table": {
     "ci_label": "95% CI",
+    "ci_method": "cluster",
     "groups": [
       {
         "title": "Accuracy",
@@ -18,12 +20,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.019620123094286804,
-                "lo": 0.014336695957260363,
-                "hi": 0.026033009229854336,
+                "mean": 0.019040901591152255,
+                "lo": 0.010821106051182736,
+                "hi": 0.029627637868704627,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -34,12 +39,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.004969854335775052,
-                "lo": 0.001825929034378523,
-                "hi": 0.009200344157476505,
+                "mean": 0.00457844574436646,
+                "lo": 0.0011794113979583935,
+                "hi": 0.009396940491839785,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -50,12 +58,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.0010475325328266503,
-                "lo": 0.0006033326967150498,
-                "hi": 0.0015259305237246413,
+                "mean": 0.001565648474855636,
+                "lo": 0.00034387834387834387,
+                "hi": 0.003125150371793593,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -66,12 +77,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.013602736225685102,
-                "lo": 0.010667404697738296,
-                "hi": 0.016857805783320447,
+                "mean": 0.012896807371930158,
+                "lo": 0.007558805484149222,
+                "hi": 0.019597162191739792,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -82,12 +96,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.008414992282328834,
-                "lo": 0.005801220185590313,
-                "hi": 0.012044841626519752,
+                "mean": 0.007221180861312117,
+                "lo": 0.00457497371515605,
+                "hi": 0.010343252613503787,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           }
@@ -104,12 +121,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 4.910954781293869,
-                "lo": 4.899222424799204,
-                "hi": 4.921981447583437,
+                "mean": 4.932865602970123,
+                "lo": 4.90305191219449,
+                "hi": 4.957699376124144,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -120,12 +140,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 4.517919218063354,
-                "lo": 4.509918225204944,
-                "hi": 4.525767551857233,
+                "mean": 4.551083841085434,
+                "lo": 4.532405761688948,
+                "hi": 4.566967309677601,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -136,12 +159,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 4.834555909395218,
-                "lo": 4.824584235018492,
-                "hi": 4.8435337714195255,
+                "mean": 4.722234919309616,
+                "lo": 4.703172767567634,
+                "hi": 4.738885739076137,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -152,12 +178,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 4.621547755718232,
-                "lo": 4.610338083738089,
-                "hi": 4.632025835984946,
+                "mean": 4.5842082948684695,
+                "lo": 4.563758494317532,
+                "hi": 4.602845513838529,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -168,12 +197,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 4.586150002479553,
-                "lo": 4.578835285919905,
-                "hi": 4.5936167167067525,
+                "mean": 4.57074685549736,
+                "lo": 4.55509184384346,
+                "hi": 4.583815394961833,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           }
@@ -191,11 +223,14 @@
               {
                 "na": false,
                 "mean": 15.104923067239946,
-                "lo": 14.935142165415542,
-                "hi": 15.274021013583173,
+                "lo": 14.66917851685944,
+                "hi": 15.533126056453538,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -207,11 +242,14 @@
               {
                 "na": false,
                 "mean": 0.09263006117527828,
-                "lo": 0.09177535499636183,
-                "hi": 0.09340773981160326,
+                "lo": 0.0908830127617996,
+                "hi": 0.09428075131896584,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -223,11 +261,14 @@
               {
                 "na": false,
                 "mean": 0.9541477282492471,
-                "lo": 0.9440873455231688,
-                "hi": 0.9637804963914595,
+                "lo": 0.9317151386769082,
+                "hi": 0.9776029914472841,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           }
@@ -244,12 +285,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.23011526970011834,
-                "lo": 0.22780702962695673,
-                "hi": 0.2324147247809111,
+                "mean": 0.25704155571125026,
+                "lo": 0.25090724027323114,
+                "hi": 0.2632782558735083,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -260,12 +304,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.10257066666666667,
-                "lo": 0.09727893333333335,
-                "hi": 0.10807466666666667,
+                "mean": 0.107264,
+                "lo": 0.10107733333333334,
+                "hi": 0.11281173333333337,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -276,12 +323,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.21489333333333333,
-                "lo": 0.20986896666666668,
-                "hi": 0.22038563333333333,
+                "mean": 0.23516,
+                "lo": 0.2252932,
+                "hi": 0.2451482,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           }
@@ -300,8 +350,11 @@
         "cells": [
           {
             "na": false,
-            "good_rate": 1.0,
-            "status": "good"
+            "status": "good",
+            "good_rate": 0.999,
+            "measured": 1000,
+            "failed": 0,
+            "total": 1000
           }
         ]
       },
@@ -312,8 +365,11 @@
         "cells": [
           {
             "na": false,
+            "status": "good",
             "good_rate": 1.0,
-            "status": "good"
+            "measured": 1000,
+            "failed": 0,
+            "total": 1000
           }
         ]
       },
@@ -324,8 +380,41 @@
         "cells": [
           {
             "na": false,
-            "good_rate": 0.999,
-            "status": "good"
+            "status": "good",
+            "good_rate": 0.998,
+            "measured": 1000,
+            "failed": 0,
+            "total": 1000
+          }
+        ]
+      },
+      {
+        "metric": "empty transcript",
+        "key": "empty_transcript",
+        "pass_rule": "not flagged",
+        "cells": [
+          {
+            "na": false,
+            "status": "good",
+            "good_rate": 1.0,
+            "measured": 1000,
+            "failed": 0,
+            "total": 1000
+          }
+        ]
+      },
+      {
+        "metric": "repeated span",
+        "key": "repeated_span",
+        "pass_rule": "not flagged",
+        "cells": [
+          {
+            "na": false,
+            "status": "good",
+            "good_rate": 0.993,
+            "measured": 1000,
+            "failed": 0,
+            "total": 1000
           }
         ]
       },
@@ -336,51 +425,78 @@
         "cells": [
           {
             "na": false,
+            "status": "good",
             "good_rate": 0.993,
-            "status": "good"
+            "measured": 1000,
+            "failed": 0,
+            "total": 1000
+          }
+        ]
+      },
+      {
+        "metric": "tail hallucination",
+        "key": "tail_hallucination",
+        "pass_rule": "not flagged",
+        "cells": [
+          {
+            "na": false,
+            "status": "good",
+            "good_rate": 0.997,
+            "measured": 1000,
+            "failed": 0,
+            "total": 1000
           }
         ]
       },
       {
         "metric": "Vowel prolongation",
         "key": "vowel_prolongation_score",
-        "pass_rule": "≤ 0.8",
+        "pass_rule": "< 0.8",
         "cells": [
           {
             "na": false,
-            "good_rate": 0.981,
-            "status": "warn"
+            "status": "warn",
+            "good_rate": 0.971,
+            "measured": 1000,
+            "failed": 0,
+            "total": 1000
           }
         ]
       }
     ]
   },
   "violations": {
-    "state": "230 violations across 6 metric(s).",
+    "state": "245 violations across 9 metric(s).",
     "counts": [
       {
         "metric": "WER",
-        "warn": 78,
-        "fail": 42,
-        "total": 120
+        "warn": 69,
+        "fail": 45,
+        "total": 114
       },
       {
         "metric": "CER",
-        "warn": 40,
-        "fail": 22,
-        "total": 62
+        "warn": 53,
+        "fail": 14,
+        "total": 67
       },
       {
         "metric": "Vowel prolongation",
         "warn": 0,
-        "fail": 26,
-        "total": 26
+        "fail": 29,
+        "total": 29
       },
       {
         "metric": "Insertions",
         "warn": 8,
-        "fail": 6,
-        "total": 14
+        "fail": 7,
+        "total": 15
+      },
+      {
+        "metric": "repeated span",
+        "warn": 0,
+        "fail": 7,
+        "total": 7
       },
       {
         "metric": "tail click detected",
@@ -389,9 +505,21 @@
         "total": 7
       },
       {
-        "metric": "NISQA MOS",
+        "metric": "tail hallucination",
         "warn": 0,
-        "fail": 1,
+        "fail": 3,
+        "total": 3
+      },
+      {
+        "metric": "NISQA MOS",
+        "warn": 2,
+        "fail": 0,
+        "total": 2
+      },
+      {
+        "metric": "Silence",
+        "warn": 1,
+        "fail": 0,
         "total": 1
       }
     ],
@@ -424,19 +552,19 @@
         },
         {
           "metric": "WER",
-          "voice": "Avery",
-          "value": "1.071",
-          "expected": "the storm took the roof the fence and what was left of my patience",
-          "heard": "the storm took the roof the fence and what was left of my patients the storm took the roo…",
-          "audio": "audio/Avery__utt_0047.wav"
+          "voice": "Timothy",
+          "value": "0.727",
+          "expected": "the photographs were fakes every last one of them detective sung",
+          "heard": "the photographs were fakes every last one of them detective sung the the the the the the …",
+          "audio": "audio/Timothy__utt_0054.wav"
         },
         {
           "metric": "WER",
-          "voice": "Reed",
-          "value": "0.857",
-          "expected": "i am not scared of you i stopped being scared a long time ago",
-          "heard": "i am not scared of you i stopped being scared a long time ago i am not scared of you i am…",
-          "audio": "audio/Reed__utt_0035.wav"
+          "voice": "Avery",
+          "value": "0.538",
+          "expected": "he walks in like he owns the whole room maybe someday he will",
+          "heard": "he walks in like he owns the whole room maybe someday he will the the the the the the the",
+          "audio": "audio/Avery__utt_0046.wav"
         },
         {
           "metric": "CER",
@@ -456,6 +584,14 @@
         },
         {
           "metric": "CER",
+          "voice": "Oliver",
+          "value": "0.156",
+          "expected": "she wrote her whole life into those notebooks forty of them stacked in the closet like br…",
+          "heard": "she wrote her whole life into those notebooks forty of them stacked in the closet like br…",
+          "audio": "audio/Oliver__utt_0081.wav"
+        },
+        {
+          "metric": "CER",
           "voice": "Jarrah",
           "value": "0.154",
           "expected": "tell halloran the shipment's late again",
@@ -464,19 +600,19 @@
         },
         {
           "metric": "CER",
-          "voice": "Victor",
-          "value": "0.125",
-          "expected": "he left the engine running and the door wide open like he meant to come right back that w…",
-          "heard": "he left the engine running in the door wide open like he meant to come right back that wa…",
-          "audio": "audio/Victor__utt_0071.wav"
-        },
-        {
-          "metric": "CER",
           "voice": "Jarrah",
           "value": "0.111",
           "expected": "i found her diary under the floorboards i wish to god i had not",
           "heard": "i found a diary under the floorboards i wished a god i had not",
           "audio": "audio/Jarrah__utt_0040.wav"
+        },
+        {
+          "metric": "Vowel prolongation",
+          "voice": "Jarrah",
+          "value": "1.05",
+          "expected": "do not you dare hang that on me kessler",
+          "heard": "do not you dare hang that on me kessler",
+          "audio": "audio/Jarrah__utt_0025.wav"
         },
         {
           "metric": "Vowel prolongation",
@@ -509,14 +645,6 @@
           "expected": "you want to know why i left the force because i got tired of arresting the wrong people t…",
           "heard": "you want to know why i left the force because i got tired of arresting the wrong people t…",
           "audio": "audio/Victor__utt_0063.wav"
-        },
-        {
-          "metric": "Vowel prolongation",
-          "voice": "Rosalind",
-          "value": "0.95",
-          "expected": "i keep a list you know everyone who ever laughed at me everyone who looked the other way …",
-          "heard": "i keep a list you know everyone who ever laughed at me everyone who looked the other way …",
-          "audio": "audio/Rosalind__utt_0083.wav"
         },
         {
           "metric": "Insertions",
@@ -559,6 +687,14 @@
           "audio": "audio/Jarrah__utt_0057.wav"
         },
         {
+          "metric": "repeated span",
+          "voice": "Timothy",
+          "value": "flagged",
+          "expected": "he kept the ticket stub in his wallet for eighteen years if you can believ e it",
+          "heard": "he kept the ticket stub in his wallet for eighteen years if you can believe it it",
+          "audio": "audio/Timothy__utt_0034.wav"
+        },
+        {
           "metric": "tail click detected",
           "voice": "Timothy",
           "value": "flagged",
@@ -589,22 +725,6 @@
           "expected": "that's not what your brother told me though",
           "heard": "that's not what your brother told me though",
           "audio": "audio/Timothy__utt_0018.wav"
-        },
-        {
-          "metric": "tail click detected",
-          "voice": "Lauren",
-          "value": "flagged",
-          "expected": "bianca you still there hello",
-          "heard": "bianca you still there hello",
-          "audio": "audio/Lauren__utt_0021.wav"
-        },
-        {
-          "metric": "NISQA MOS",
-          "voice": "Tessa",
-          "value": "2.755",
-          "expected": "gone all of it gone",
-          "heard": "gone all of it gone",
-          "audio": "audio/Tessa__utt_0003.wav"
         }
       ]
     }

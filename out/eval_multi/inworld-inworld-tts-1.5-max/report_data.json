@@ -1,11 +1,13 @@
 {
   "title": "TTS Assessment Report",
   "subtitle": "1000 samples",
+  "question": "How do these voices/models handle messy dialogue text?",
   "labels": [
     "inworld-inworld-tts-1.5-max"
   ],
   "metric_table": {
     "ci_label": "95% CI",
+    "ci_method": "cluster",
     "groups": [
       {
         "title": "Accuracy",
@@ -18,12 +20,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.021404652375054626,
-                "lo": 0.015659856155404665,
-                "hi": 0.028053112708211307,
+                "mean": 0.020644529406236005,
+                "lo": 0.01064986541485057,
+                "hi": 0.03499488858270746,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -34,12 +39,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.004096918767507002,
-                "lo": 0.0015361837916984978,
-                "hi": 0.00723541634835752,
+                "mean": 0.003863585434173669,
+                "lo": 0.0005241548892284186,
+                "hi": 0.009853217468805702,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -50,12 +58,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.0028228496276559403,
-                "lo": 0.0017596651387827866,
-                "hi": 0.0040885911637382226,
+                "mean": 0.0032576322363515927,
+                "lo": 0.0010943054487774096,
+                "hi": 0.005866240976965353,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -66,12 +77,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.014484883979891677,
-                "lo": 0.011278402564360425,
-                "hi": 0.018315534931196926,
+                "mean": 0.013523311735710739,
+                "lo": 0.007162588938262691,
+                "hi": 0.02157531672267235,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -82,12 +96,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.00800295051216228,
-                "lo": 0.006014458779361941,
-                "hi": 0.010296629592937671,
+                "mean": 0.007050950979711926,
+                "lo": 0.004085578170695513,
+                "hi": 0.011091580706310692,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           }
@@ -104,12 +121,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 4.877280827283859,
-                "lo": 4.861652801126241,
-                "hi": 4.8913646849274635,
+                "mean": 4.887334399461746,
+                "lo": 4.853185231733322,
+                "hi": 4.9180257185041905,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -120,12 +140,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 4.508949339389801,
-                "lo": 4.498704944998026,
-                "hi": 4.518653923994303,
+                "mean": 4.5439826078414916,
+                "lo": 4.523577703738213,
+                "hi": 4.562361156159639,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -136,12 +159,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 4.816993741512299,
-                "lo": 4.802719238376618,
-                "hi": 4.8298922326207165,
+                "mean": 4.709089955806732,
+                "lo": 4.6849377554237845,
+                "hi": 4.730984051793814,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -152,12 +178,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 4.600793197870255,
-                "lo": 4.588676942580938,
-                "hi": 4.6121817068696025,
+                "mean": 4.557464760780334,
+                "lo": 4.5352014493107795,
+                "hi": 4.578622086769343,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -168,12 +197,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 4.569409053087234,
-                "lo": 4.560102668720484,
-                "hi": 4.578448138397932,
+                "mean": 4.532572292566299,
+                "lo": 4.512621273124219,
+                "hi": 4.551414111590385,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           }
@@ -191,11 +223,14 @@
               {
                 "na": false,
                 "mean": 15.166399964618742,
-                "lo": 14.993121549255964,
-                "hi": 15.337737830349088,
+                "lo": 14.74221865302493,
+                "hi": 15.584274736738305,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -207,11 +242,14 @@
               {
                 "na": false,
                 "mean": 0.09499803337911487,
-                "lo": 0.09412651923083779,
-                "hi": 0.09583104279324844,
+                "lo": 0.09335575760166409,
+                "hi": 0.09655467560355144,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -223,11 +261,14 @@
               {
                 "na": false,
                 "mean": 0.9563676945950942,
-                "lo": 0.9474387788048869,
-                "hi": 0.9655251193225558,
+                "lo": 0.9372918972753975,
+                "hi": 0.9772945559833823,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           }
@@ -244,12 +285,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.22794200675333615,
-                "lo": 0.22562503547981566,
-                "hi": 0.23045875779025693,
+                "mean": 0.25581346039266134,
+                "lo": 0.25023271043778156,
+                "hi": 0.2614104984520202,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -260,12 +304,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.15291733333333335,
-                "lo": 0.14574933333333334,
-                "hi": 0.1602570666666667,
+                "mean": 0.15889066666666668,
+                "lo": 0.15270293333333332,
+                "hi": 0.16495040000000002,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           },
@@ -276,12 +323,15 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.18682933333333335,
-                "lo": 0.18054433333333336,
-                "hi": 0.1927764,
+                "mean": 0.20755200000000001,
+                "lo": 0.19933370000000003,
+                "hi": 0.21612010000000004,
                 "best": false,
                 "worst": false,
-                "sig": false
+                "sig": false,
+                "n": 1000,
+                "failed": 0,
+                "total": 1000
               }
             ]
           }
@@ -300,8 +350,11 @@
         "cells": [
           {
             "na": false,
+            "status": "good",
             "good_rate": 0.997,
-            "status": "good"
+            "measured": 1000,
+            "failed": 0,
+            "total": 1000
           }
         ]
       },
@@ -312,8 +365,11 @@
         "cells": [
           {
             "na": false,
+            "status": "good",
             "good_rate": 1.0,
-            "status": "good"
+            "measured": 1000,
+            "failed": 0,
+            "total": 1000
           }
         ]
       },
@@ -324,8 +380,41 @@
         "cells": [
           {
             "na": false,
-            "good_rate": 0.995,
-            "status": "good"
+            "status": "good",
+            "good_rate": 0.992,
+            "measured": 1000,
+            "failed": 0,
+            "total": 1000
+          }
+        ]
+      },
+      {
+        "metric": "empty transcript",
+        "key": "empty_transcript",
+        "pass_rule": "not flagged",
+        "cells": [
+          {
+            "na": false,
+            "status": "good",
+            "good_rate": 1.0,
+            "measured": 1000,
+            "failed": 0,
+            "total": 1000
+          }
+        ]
+      },
+      {
+        "metric": "repeated span",
+        "key": "repeated_span",
+        "pass_rule": "not flagged",
+        "cells": [
+          {
+            "na": false,
+            "status": "good",
+            "good_rate": 0.996,
+            "measured": 1000,
+            "failed": 0,
+            "total": 1000
           }
         ]
       },
@@ -336,45 +425,66 @@
         "cells": [
           {
             "na": false,
+            "status": "good",
             "good_rate": 0.993,
-            "status": "good"
+            "measured": 1000,
+            "failed": 0,
+            "total": 1000
+          }
+        ]
+      },
+      {
+        "metric": "tail hallucination",
+        "key": "tail_hallucination",
+        "pass_rule": "not flagged",
+        "cells": [
+          {
+            "na": false,
+            "status": "good",
+            "good_rate": 1.0,
+            "measured": 1000,
+            "failed": 0,
+            "total": 1000
           }
         ]
       },
       {
         "metric": "Vowel prolongation",
         "key": "vowel_prolongation_score",
-        "pass_rule": "≤ 0.8",
+        "pass_rule": "< 0.8",
         "cells": [
           {
             "na": false,
-            "good_rate": 0.981,
-            "status": "warn"
+            "status": "warn",
+            "good_rate": 0.984,
+            "measured": 1000,
+            "failed": 0,
+            "total": 1000
           }
         ]
       }
     ]
   },
   "violations": {
-    "state": "238 violations across 7 metric(s).",
+    "state": "232 violations across 8 metric(s).",
     "counts": [
       {
         "metric": "WER",
-        "warn": 82,
+        "warn": 72,
         "fail": 46,
-        "total": 128
+        "total": 118
       },
       {
         "metric": "CER",
-        "warn": 36,
-        "fail": 25,
+        "warn": 46,
+        "fail": 15,
         "total": 61
       },
       {
         "metric": "Vowel prolongation",
         "warn": 0,
-        "fail": 19,
-        "total": 19
+        "fail": 16,
+        "total": 16
       },
       {
         "metric": "Insertions",
@@ -383,16 +493,22 @@
         "total": 15
       },
       {
+        "metric": "NISQA MOS",
+        "warn": 3,
+        "fail": 5,
+        "total": 8
+      },
+      {
         "metric": "tail click detected",
         "warn": 0,
         "fail": 7,
         "total": 7
       },
       {
-        "metric": "NISQA MOS",
-        "warn": 3,
-        "fail": 2,
-        "total": 5
+        "metric": "repeated span",
+        "warn": 0,
+        "fail": 4,
+        "total": 4
       },
       {
         "metric": "Silence",
@@ -447,18 +563,18 @@
         {
           "metric": "CER",
           "voice": "Jarrah",
-          "value": "0.404",
-          "expected": "the recording cuts out right after the scream nine seconds of static then nothing we have…",
-          "heard": "the recording cuts out right after the scream nine seconds of static then nothing we have…",
-          "audio": "audio/Jarrah__utt_0064.wav"
-        },
-        {
-          "metric": "CER",
-          "voice": "Jarrah",
           "value": "0.23",
           "expected": "the bank called again i let it ring what else is there to say",
           "heard": "the bank called again what else is there to say",
           "audio": "audio/Jarrah__utt_0050.wav"
+        },
+        {
+          "metric": "CER",
+          "voice": "Tessa",
+          "value": "0.212",
+          "expected": "the calloways moved in last spring all smiles and casseroles by fall the moving trucks we…",
+          "heard": "the calloways moved in last spring all smiles and casseroles by fall the moving trucks we…",
+          "audio": "audio/Tessa__utt_0077.wav"
         },
         {
           "metric": "CER",
@@ -494,22 +610,6 @@
         },
         {
           "metric": "Vowel prolongation",
-          "voice": "Miranda",
-          "value": "1.15",
-          "expected": "cut to the boardroom vance stands at the head of the table knuckles white on the wood the…",
-          "heard": "cut two the boardroom vance stands at the head of the table knuckles white on the wood th…",
-          "audio": "audio/Miranda__utt_0090.wav"
-        },
-        {
-          "metric": "Vowel prolongation",
-          "voice": "Miranda",
-          "value": "1",
-          "expected": "he built the whole company out of a garage on highway nine back when nobody would return …",
-          "heard": "he built the whole company out of a garage on highway nine back when nobody would return …",
-          "audio": "audio/Miranda__utt_0098.wav"
-        },
-        {
-          "metric": "Vowel prolongation",
           "voice": "Rosalind",
           "value": "0.95",
           "expected": "the whole town knew and nobody said a word that's the part i cannot forgive father domini…",
@@ -523,6 +623,22 @@
           "expected": "i traded my wedding ring for a bus ticket and a sandwich best deal i ever made and the wo…",
           "heard": "i traded my wedding ring for a bus ticket and a sandwich best deal i ever made and the wo…",
           "audio": "audio/Avery__utt_0066.wav"
+        },
+        {
+          "metric": "Vowel prolongation",
+          "voice": "Victor",
+          "value": "0.925",
+          "expected": "your mother and i we tried god knows we tried kiddo",
+          "heard": "your mother and i we tried god knows we tried kiddo",
+          "audio": "audio/Victor__utt_0045.wav"
+        },
+        {
+          "metric": "Vowel prolongation",
+          "voice": "Miranda",
+          "value": "0.875",
+          "expected": "he used to read to us every night doing all the voices the wolf and the witch and the lit…",
+          "heard": "he used to read to us every night doing all the voices the wolf and the witch and the lit…",
+          "audio": "audio/Miranda__utt_0079.wav"
         },
         {
           "metric": "Insertions",
@@ -565,49 +681,33 @@
           "audio": "audio/Oliver__utt_0074.wav"
         },
         {
-          "metric": "tail click detected",
-          "voice": "Timothy",
-          "value": "flagged",
+          "metric": "NISQA MOS",
+          "voice": "Victor",
+          "value": "2.135",
+          "expected": "i saw the way he looked at her",
+          "heard": "i saw the way he looked at her",
+          "audio": "audio/Victor__utt_0028.wav"
+        },
+        {
+          "metric": "NISQA MOS",
+          "voice": "Victor",
+          "value": "2.563",
           "expected": "we do not talk about what happened at the lake",
           "heard": "we do not talk about what happened at the lake",
-          "audio": "audio/Timothy__utt_0011.wav"
+          "audio": "audio/Victor__utt_0011.wav"
         },
         {
-          "metric": "tail click detected",
-          "voice": "Tessa",
-          "value": "flagged",
-          "expected": "sister agnes never forgave him not once",
-          "heard": "sister agnes never forgave him not once",
-          "audio": "audio/Tessa__utt_0012.wav"
-        },
-        {
-          "metric": "tail click detected",
-          "voice": "Timothy",
-          "value": "flagged",
-          "expected": "he hung up before i could say a word",
-          "heard": "he hung up before i could say a word",
-          "audio": "audio/Timothy__utt_0019.wav"
-        },
-        {
-          "metric": "tail click detected",
-          "voice": "Lauren",
-          "value": "flagged",
-          "expected": "the door was ajar and the dog kept barking",
-          "heard": "the door was ajar and the dog kept barking",
-          "audio": "audio/Lauren__utt_0026.wav"
-        },
-        {
-          "metric": "tail click detected",
-          "voice": "Lauren",
-          "value": "flagged",
-          "expected": "you will thank me one day he said he was wrong about that too",
-          "heard": "you will thank me one day he said he was wrong about that too",
-          "audio": "audio/Lauren__utt_0041.wav"
+          "metric": "NISQA MOS",
+          "voice": "Victor",
+          "value": "2.567",
+          "expected": "that's not what your brother told me though",
+          "heard": "that's not what your brother told me though",
+          "audio": "audio/Victor__utt_0018.wav"
         },
         {
           "metric": "NISQA MOS",
           "voice": "Jarrah",
-          "value": "2.344",
+          "value": "2.616",
           "expected": "run damn it run",
           "heard": "run damn it run",
           "audio": "audio/Jarrah__utt_0002.wav"
@@ -615,50 +715,10 @@
         {
           "metric": "NISQA MOS",
           "voice": "Jarrah",
-          "value": "2.735",
+          "value": "2.757",
           "expected": "priya get down get down now",
           "heard": "priya get down get down now",
           "audio": "audio/Jarrah__utt_0015.wav"
-        },
-        {
-          "metric": "NISQA MOS",
-          "voice": "Avery",
-          "value": "2.808",
-          "expected": "not now not now",
-          "heard": "not now not now",
-          "audio": "audio/Avery__utt_0001.wav"
-        },
-        {
-          "metric": "NISQA MOS",
-          "voice": "Oliver",
-          "value": "2.844",
-          "expected": "gone all of it gone",
-          "heard": "gone all of it gone",
-          "audio": "audio/Oliver__utt_0003.wav"
-        },
-        {
-          "metric": "NISQA MOS",
-          "voice": "Tessa",
-          "value": "3.024",
-          "expected": "not now not now",
-          "heard": "not now not now",
-          "audio": "audio/Tessa__utt_0001.wav"
-        },
-        {
-          "metric": "Silence",
-          "voice": "Lauren",
-          "value": "0.467",
-          "expected": "run damn it run",
-          "heard": "run damn it run",
-          "audio": "audio/Lauren__utt_0002.wav"
-        },
-        {
-          "metric": "Silence",
-          "voice": "Tessa",
-          "value": "0.453",
-          "expected": "bianca you still there hello",
-          "heard": "bianca you still there hello",
-          "audio": "audio/Tessa__utt_0021.wav"
         }
       ]
     }
