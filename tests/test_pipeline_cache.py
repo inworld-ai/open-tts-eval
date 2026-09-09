@@ -49,6 +49,7 @@ def test_second_run_hits_cache(tmp_path: Path):
     _, first = run_assessment(manifest, tmp_path / "out", config)
     assert first["cache"]["hits"] == 0
     assert first["cache"]["misses"] == 2
+    assert first["cache"]["dir"] == ".measure_cache"  # portable: relative to the output dir
 
     _, second = run_assessment(manifest, tmp_path / "out", config)
     assert second["cache"]["hits"] == 2

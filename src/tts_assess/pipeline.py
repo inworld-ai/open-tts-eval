@@ -27,8 +27,9 @@ from tts_assess.reporting.writers import write_csv, write_jsonl, write_summary
 # Bump whenever a measurement's definition changes, so stale cache entries are
 # never mixed with fresh ones. History:
 #   2 - sample rate / channels / reference digest joined the key
-#   3 - speech-relative silence threshold, tail click scored at a fixed rate,
-#       self-consistent vowel prolongation cut, NISQA fed native-rate audio
+#   3 - padding-stable silence threshold, tail click scored at a fixed rate,
+#       self-consistent vowel prolongation cut, NISQA fed native-rate audio,
+#       ASR fed the decoded array (shared per-pair core)
 _MEASUREMENT_CACHE_VERSION = 3
 
 
@@ -61,7 +62,7 @@ def run_assessment(
     # so a self-contained run dir (audio + report together) is portable and its
     # report's <audio> players resolve without machine-specific absolute paths.
     for row in rows:
-        row["audio_path"] = _relative_audio_path(row.get("audio_path"), output_dir)
+        row["audio_path"] = _relative_to_output(row.get("audio_path"), output_dir)
 
     summary = summarize(
         rows,
@@ -73,7 +74,13 @@ def run_assessment(
     summary["config"] = config.model_dump()
     summary["evaluator"] = evaluator
     if cache is not None:
-        summary["cache"] = {"hits": cache.hits, "misses": cache.misses, "dir": str(cache.directory)}
+        summary["cache"] = {
+            "hits": cache.hits,
+            "misses": cache.misses,
+            # Relative when inside the output dir, like audio paths: the artifact
+            # must not leak machine-specific absolute paths.
+            "dir": _relative_to_output(str(cache.directory), output_dir),
+        }
     write_jsonl(output_dir / "results.jsonl", rows)
     write_summary(output_dir / "summary.json", summary)
     if config.reporting.csv:
@@ -90,14 +97,14 @@ def run_assessment(
     return rows, summary
 
 
-def _relative_audio_path(audio_path: str | None, output_dir: Path) -> str | None:
-    """Return the path relative to output_dir when the audio is inside it, else unchanged."""
-    if not audio_path:
-        return audio_path
+def _relative_to_output(path: str | None, output_dir: Path) -> str | None:
+    """Return ``path`` relative to output_dir when it lies inside it, else unchanged."""
+    if not path:
+        return path
     try:
-        return Path(audio_path).resolve().relative_to(Path(output_dir).resolve()).as_posix()
+        return Path(path).resolve().relative_to(Path(output_dir).resolve()).as_posix()
     except (ValueError, OSError):
-        return audio_path
+        return path
 
 
 class _MeasurementCache:
