@@ -45,6 +45,14 @@ _TENS = {
     80: "eighty",
     90: "ninety",
 }
+# Scale words for cardinal numbers up to the billions; larger values fall back to
+# digit-by-digit reading, which at least stays consistent on both sides.
+_SCALES = ((1_000_000_000, "billion"), (1_000_000, "million"), (1_000, "thousand"))
+
+# "1,000" / "12,345,678": digit groups joined by thousands separators.
+_THOUSANDS_SEP = re.compile(r"\b\d{1,3}(?:,\d{3})+\b")
+# "3.14": a decimal number (dot between digit runs).
+_DECIMAL = re.compile(r"\b(\d+)\.(\d+)\b")
 
 
 def normalize_english(text: str, *, expand_numbers: bool = True) -> str:
@@ -59,6 +67,13 @@ def normalize_english(text: str, *, expand_numbers: bool = True) -> str:
     )
     for source, replacement in _CONTRACTIONS.items():
         text = text.replace(source, replacement)
+    # Numbers must be parsed whole before any punctuation is touched: stripping
+    # the comma from "1,000" or the dot from "3.14" first would turn them into
+    # "1 000" -> "one zero" and "3 14" -> "three fourteen", rewarding a wrong
+    # reading and penalizing the correct one.
+    text = _THOUSANDS_SEP.sub(lambda match: match.group(0).replace(",", ""), text)
+    if expand_numbers:
+        text = _DECIMAL.sub(_decimal_to_words, text)
     # Fold intra-word abbreviation dots so "a.m." -> "am" and "u.s." -> "us"
     # instead of splitting into "a m" when punctuation is later stripped. This
     # removes a common source of spurious WER against ASR output.
@@ -76,6 +91,12 @@ def normalize_english(text: str, *, expand_numbers: bool = True) -> str:
     return text.strip()
 
 
+def _decimal_to_words(match: re.Match[str]) -> str:
+    integer, fraction = match.group(1), match.group(2)
+    digits = " ".join(_NUMBERS_0_TO_19[int(digit)] for digit in fraction)
+    return f"{_number_to_words(int(integer))} point {digits}"
+
+
 def _number_to_words(value: int) -> str:
     if value < 20:
         return _NUMBERS_0_TO_19[value]
@@ -88,4 +109,11 @@ def _number_to_words(value: int) -> str:
         remainder = value % 100
         prefix = f"{_NUMBERS_0_TO_19[hundreds]} hundred"
         return prefix if remainder == 0 else f"{prefix} {_number_to_words(remainder)}"
+    for scale, word in _SCALES:
+        if value >= scale * 1000:
+            break
+        if value >= scale:
+            major, remainder = divmod(value, scale)
+            prefix = f"{_number_to_words(major)} {word}"
+            return prefix if remainder == 0 else f"{prefix} {_number_to_words(remainder)}"
     return " ".join(_NUMBERS_0_TO_19[int(digit)] for digit in str(value))

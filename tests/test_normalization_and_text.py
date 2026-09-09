@@ -19,6 +19,30 @@ def test_normalizer_folds_hyphenated_compounds_and_abbreviations():
     assert normalize_english("the U.S. economy") == "the us economy"
 
 
+def test_normalizer_reads_thousands_separators_and_decimals_as_numbers():
+    # Issue #3 H6: "1,000" used to become "one zero" and "3.14" "three fourteen",
+    # so a wrong reading scored WER 0 while the correct one was penalized.
+    assert normalize_english("There are 1,000 boxes.") == "there are one thousand boxes"
+    assert normalize_english("The value is 3.14.") == "the value is three point one four"
+    assert normalize_english("12,345,678") == (
+        "twelve million three hundred forty five thousand six hundred seventy eight"
+    )
+    assert normalize_english("2000") == "two thousand"
+    assert normalize_english("0.5") == "zero point five"
+    # Spoken and written forms normalize identically.
+    spoken = normalize_english("one thousand")
+    assert normalize_english("1,000") == spoken and normalize_english("1000") == spoken
+
+
+def test_correct_number_readings_score_zero_and_wrong_ones_do_not():
+    reference = normalize_english("There are 1,000 boxes.")
+    assert compute_text_metrics(reference, "there are one thousand boxes").wer == 0.0
+    assert compute_text_metrics(reference, "there are one zero boxes").wer > 0.0
+    reference = normalize_english("The value is 3.14.")
+    assert compute_text_metrics(reference, "the value is three point one four").wer == 0.0
+    assert compute_text_metrics(reference, "the value is three fourteen").wer > 0.0
+
+
 def test_text_metrics_detect_repetition_and_tail_extra_words():
     metrics = compute_text_metrics(
         "hello world",
