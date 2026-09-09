@@ -7,26 +7,29 @@ from typing import Any
 
 from rich.progress import track
 
-from tts_assess.asr import transcribe
-from tts_assess.audio import analyze_features, read_audio, resample_mono
+from tts_assess.audio import read_audio
 from tts_assess.config import AssessmentConfig
+from tts_assess.evaluate import measure_pair
 from tts_assess.io.manifest import (
     ManifestItem,
     load_manifest,
     resolve_manifest_paths,
     validate_manifest_paths,
 )
-from tts_assess.metrics import audio_metric_dict, compute_text_metrics
-from tts_assess.metrics.optional import SAMPLE_RATE as OPTIONAL_METRICS_SAMPLE_RATE
-from tts_assess.metrics.optional import compute_optional_metrics
 from tts_assess.normalization import build_normalizer
+from tts_assess.provenance import evaluator_fingerprint
 from tts_assess.reporting.aggregate import summarize
 from tts_assess.reporting.compare import build_run_report
 from tts_assess.reporting.comparison_html import render_comparison_html
 from tts_assess.reporting.thresholds import classify_row
 from tts_assess.reporting.writers import write_csv, write_jsonl, write_summary
 
-_MEASUREMENT_CACHE_VERSION = 2
+# Bump whenever a measurement's definition changes, so stale cache entries are
+# never mixed with fresh ones. History:
+#   2 - sample rate / channels / reference digest joined the key
+#   3 - speech-relative silence threshold, tail click scored at a fixed rate,
+#       self-consistent vowel prolongation cut, NISQA fed native-rate audio
+_MEASUREMENT_CACHE_VERSION = 3
 
 
 def run_assessment(
@@ -46,10 +49,13 @@ def run_assessment(
     output_dir.mkdir(parents=True, exist_ok=True)
     normalizer = build_normalizer(config.normalization)
     cache = _MeasurementCache(cache_dir or output_dir / ".measure_cache") if use_cache else None
+    # Computed once per run: identifies the code + settings that produce every
+    # score below, so results can later be checked for evaluator consistency.
+    evaluator = evaluator_fingerprint(config)
 
     rows = []
     for item in track(items, description="Assessing audio"):
-        rows.append(_assess_item(item, config, normalizer, cache))
+        rows.append(_assess_item(item, config, normalizer, cache, evaluator))
 
     # Store audio paths relative to the output dir when the audio lives under it,
     # so a self-contained run dir (audio + report together) is portable and its
@@ -65,6 +71,7 @@ def run_assessment(
     )
     summary["manifest_errors"] = errors
     summary["config"] = config.model_dump()
+    summary["evaluator"] = evaluator
     if cache is not None:
         summary["cache"] = {"hits": cache.hits, "misses": cache.misses, "dir": str(cache.directory)}
     write_jsonl(output_dir / "results.jsonl", rows)
@@ -109,6 +116,7 @@ class _MeasurementCache:
         self.misses = 0
 
     def load(self, key: str) -> dict[str, Any] | None:
+        """Cached measurement for ``key``; a miss (or unreadable entry) counts as computed."""
         path = self.directory / f"{key}.json"
         if path.exists():
             try:
@@ -116,11 +124,11 @@ class _MeasurementCache:
                 self.hits += 1
                 return measured
             except (OSError, ValueError):
-                return None
+                pass
+        self.misses += 1
         return None
 
     def store(self, key: str, measured: dict[str, Any]) -> None:
-        self.misses += 1
         path = self.directory / f"{key}.json"
         path.write_text(json.dumps(measured, default=str, ensure_ascii=False), encoding="utf-8")
 
@@ -131,7 +139,9 @@ def _cache_key(
     channels: int,
     item: ManifestItem,
     config: AssessmentConfig,
+    evaluator: dict[str, Any] | None = None,
 ) -> str:
+    evaluator = evaluator or evaluator_fingerprint(config)
     digest = hashlib.sha1()
     digest.update(audio.tobytes())
     reference_digest = None
@@ -143,6 +153,10 @@ def _cache_key(
     fingerprint = json.dumps(
         {
             "cache_version": _MEASUREMENT_CACHE_VERSION,
+            # Any edit to metric/normalizer code (or a plugin) changes the key, so
+            # a re-run recomputes instead of replaying scores from other code.
+            "code_hash": evaluator["code_hash"],
+            "plugin_hash": evaluator["plugin_hash"],
             "text": item.text,
             "language": item.language,
             "sample_rate": sample_rate,
@@ -163,7 +177,9 @@ def _assess_item(
     config: AssessmentConfig,
     normalizer,
     cache: _MeasurementCache | None,
+    evaluator: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
+    evaluator = evaluator or evaluator_fingerprint(config)
     reference_path = str(item.reference_audio_path) if item.reference_audio_path else None
     row: dict[str, Any] = {
         "id": item.id,
@@ -173,6 +189,7 @@ def _assess_item(
         "reference_audio_path": reference_path,
         "language": item.language,
         "metadata": item.metadata,
+        "evaluator": evaluator,
     }
     try:
         audio, sample_rate, channels = read_audio(item.audio_path)
@@ -181,7 +198,7 @@ def _assess_item(
         return row
 
     key = (
-        _cache_key(audio, sample_rate, channels, item, config)
+        _cache_key(audio, sample_rate, channels, item, config, evaluator)
         if cache is not None
         else None
     )
@@ -191,7 +208,9 @@ def _assess_item(
         if "error_audio" in measured or "error_asr" in measured:
             row.update(measured)
             return row
-        if key is not None:
+        # Only complete measurements are cached. A failed optional metric (e.g. a
+        # NISQA exception) must be retried on the next run, not frozen forever.
+        if key is not None and not _has_measurement_error(measured):
             cache.store(key, measured)
 
     row.update(measured)
@@ -202,6 +221,10 @@ def _assess_item(
     return row
 
 
+def _has_measurement_error(measured: dict[str, Any]) -> bool:
+    return any(key.endswith("_error") or key.startswith("error_") for key in measured)
+
+
 def _measure_item(
     item: ManifestItem,
     config: AssessmentConfig,
@@ -210,42 +233,21 @@ def _measure_item(
     sample_rate: int,
     channels: int,
 ) -> dict[str, Any]:
-    """Compute the cacheable measurement (audio + ASR + text + optional metrics)."""
-    measured: dict[str, Any] = {}
-    try:
-        audio_features = analyze_features(audio, sample_rate, channels)
-        measured.update(audio_metric_dict(audio_features, item.text))
-    except Exception as exc:
-        return {"error_audio": str(exc), "status": "fail", "failure_labels": ["fail:audio"]}
-
-    try:
-        transcript = transcribe(item.audio_path, config.asr, expected_text=item.text)
-        measured.update(
-            {
-                "transcript": transcript.text,
-                "asr_backend": transcript.backend,
-                "asr_model": transcript.model,
-                "asr_segments": [segment.__dict__ for segment in transcript.segments],
-            }
-        )
-    except Exception as exc:
-        return {"error_asr": str(exc), "status": "fail", "failure_labels": ["fail:asr"]}
-
-    normalized_text = normalizer(item.text)
-    normalized_transcript = normalizer(measured["transcript"])
-    measured["normalized_text"] = normalized_text
-    measured["normalized_transcript"] = normalized_transcript
-    measured.update(compute_text_metrics(normalized_text, normalized_transcript).to_dict())
-
-    # Reuse the already-decoded audio: resample once to the optional-metric rate
-    # and decode the reference (if any) once, instead of re-reading per metric.
-    audio_16k = resample_mono(audio, sample_rate, OPTIONAL_METRICS_SAMPLE_RATE)
-    reference_16k = None
+    """Compute the cacheable measurement via the shared per-pair core (evaluate.py)."""
+    reference_audio = None
+    reference_sample_rate = None
     if item.reference_audio_path is not None:
         try:
-            ref_audio, ref_sample_rate, _ = read_audio(item.reference_audio_path)
-            reference_16k = resample_mono(ref_audio, ref_sample_rate, OPTIONAL_METRICS_SAMPLE_RATE)
+            reference_audio, reference_sample_rate, _ = read_audio(item.reference_audio_path)
         except Exception:
-            reference_16k = None
-    measured.update(compute_optional_metrics(audio_16k, reference_16k, config.optional_metrics))
-    return measured
+            reference_audio = None
+    return measure_pair(
+        audio,
+        item.text,
+        config,
+        sample_rate=sample_rate,
+        channels=channels,
+        reference_audio=reference_audio,
+        reference_sample_rate=reference_sample_rate,
+        normalizer=normalizer,
+    )

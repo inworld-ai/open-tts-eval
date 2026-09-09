@@ -4,6 +4,7 @@ from tts_assess.audio.features import (
     analyze_features,
     load_audio,
     read_audio,
+    read_audio_bytes,
     resample_mono,
 )
 
@@ -13,5 +14,6 @@ __all__ = [
     "analyze_features",
     "load_audio",
     "read_audio",
+    "read_audio_bytes",
     "resample_mono",
 ]

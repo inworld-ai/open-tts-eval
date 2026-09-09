@@ -4,7 +4,13 @@ from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 
+import numpy as np
+
+from tts_assess.audio import resample_mono
 from tts_assess.config import ASRConfig
+
+# faster-whisper only accepts decoded arrays at this rate.
+WHISPER_SAMPLE_RATE = 16000
 
 
 @dataclass(frozen=True)
@@ -22,7 +28,18 @@ class ASRTranscript:
     model: str
 
 
-def transcribe(path: Path, config: ASRConfig, *, expected_text: str | None = None) -> ASRTranscript:
+def transcribe(
+    source: Path | np.ndarray,
+    config: ASRConfig,
+    *,
+    expected_text: str | None = None,
+    sample_rate: int | None = None,
+) -> ASRTranscript:
+    """Transcribe an audio file path or an already-decoded mono float32 array.
+
+    Array input requires ``sample_rate``; it is what keeps the CLI pipeline and
+    in-memory callers (services) on the identical code path.
+    """
     if config.backend == "mock":
         text = expected_text or ""
         return ASRTranscript(
@@ -31,7 +48,7 @@ def transcribe(path: Path, config: ASRConfig, *, expected_text: str | None = Non
             backend="mock",
             model="mock",
         )
-    return _transcribe_faster_whisper(path, config)
+    return _transcribe_faster_whisper(source, config, sample_rate=sample_rate)
 
 
 @lru_cache(maxsize=4)
@@ -46,12 +63,25 @@ def _load_whisper_model(model: str, device: str, compute_type: str):
     return WhisperModel(model, device=device, compute_type=compute_type)
 
 
-def _transcribe_faster_whisper(path: Path, config: ASRConfig) -> ASRTranscript:
+def _transcribe_faster_whisper(
+    source: Path | np.ndarray,
+    config: ASRConfig,
+    *,
+    sample_rate: int | None = None,
+) -> ASRTranscript:
+    if isinstance(source, np.ndarray):
+        if sample_rate is None:
+            raise ValueError("sample_rate is required when transcribing a decoded array")
+        audio_input = resample_mono(
+            np.asarray(source, dtype=np.float32), sample_rate, WHISPER_SAMPLE_RATE
+        )
+    else:
+        audio_input = str(source)
     # Cached so the model loads once per (model, device, compute_type) instead of
     # being re-instantiated for every manifest row.
     model = _load_whisper_model(config.model, config.device, config.compute_type)
     segments_iter, _info = model.transcribe(
-        str(path),
+        audio_input,
         language=config.language,
         beam_size=5,
         vad_filter=True,
