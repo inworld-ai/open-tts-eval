@@ -11,6 +11,10 @@ from tts_assess.config import ASRConfig
 
 # faster-whisper only accepts decoded arrays at this rate.
 WHISPER_SAMPLE_RATE = 16000
+# faster-whisper retries a degenerate segment (repetition, low log-prob) with
+# temperature sampling. Seeding the decoder before every clip makes that
+# fallback reproducible per clip and independent of the clips before it.
+ASR_DECODER_SEED = 0
 
 
 @dataclass(frozen=True)
@@ -51,6 +55,20 @@ def transcribe(
     return _transcribe_faster_whisper(source, config, sample_rate=sample_rate)
 
 
+def _seed_decoder(seed: int) -> None:
+    """Seed CTranslate2's RNG (used by faster-whisper's temperature fallback).
+
+    Removes the sampling randomness from transcripts. It does not make CPU
+    inference bit-exact: float reduction order can still flip a near-tie beam
+    decision on a handful of clips per thousand.
+    """
+    try:
+        import ctranslate2
+    except ImportError:
+        return
+    ctranslate2.set_random_seed(seed)
+
+
 @lru_cache(maxsize=4)
 def _load_whisper_model(model: str, device: str, compute_type: str):
     try:
@@ -80,6 +98,7 @@ def _transcribe_faster_whisper(
     # Cached so the model loads once per (model, device, compute_type) instead of
     # being re-instantiated for every manifest row.
     model = _load_whisper_model(config.model, config.device, config.compute_type)
+    _seed_decoder(ASR_DECODER_SEED)
     segments_iter, _info = model.transcribe(
         audio_input,
         language=config.language,

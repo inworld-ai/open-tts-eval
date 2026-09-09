@@ -423,6 +423,12 @@ form of every report.
   TTS+ASR signal: check the `expected` vs `heard` columns in Threshold Violations, cross-reference
   NISQA (which needs no transcript), and confirm outliers by listening. A larger or multilingual
   Whisper model reduces, but does not remove, this bias.
+- **ASR is not bit-reproducible on CPU.** The Whisper decoder is seeded per clip, which removes
+  the randomness of its temperature fallback, but float reduction order can still flip a near-tie
+  beam decision: between two identical runs of the bundled benchmark, roughly 2 clips per thousand
+  gain or lose a tail hallucination and change verdict. Treat single-clip differences that small as
+  noise, read pass counts with their confidence intervals, and use the measurement cache rather
+  than re-transcription when you need stable numbers.
 - Automated metrics narrow review; they do not replace human listening tests.
 - Whisper timestamps are coarse diagnostics, not forced alignment.
 - Speaker similarity requires a reference voice and is backend-dependent.

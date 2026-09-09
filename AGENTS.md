@@ -251,6 +251,11 @@ out/eval_multi/                # example evaluated runs + compare_all report (au
   editing reporting code does not. Failed optional metrics are never cached.
 - `compare` refuses runs scored by different ASR/normalizer/measurement code. Old runs without an
   `evaluator` stamp produce a warning; re-evaluate them rather than reasoning about mixed scores.
+- **Whisper on CPU is not bit-reproducible.** The decoder is seeded per clip (removes the
+  temperature-fallback sampling randomness), but float reduction order can still flip a near-tie
+  beam decision: expect a few tail hallucinations ("The The The…", a repeated sentence) to appear or
+  vanish per thousand clips between identical runs, each moving one clip's pass/fail. Quote pass
+  counts with their CIs, and rely on the measurement cache (not re-transcription) for stability.
 - The checked-in `out/eval_multi/` results are only valid for the code that produced them: compare
   `summary.json["evaluator"]["code_hash"]` with `tts_assess.provenance.measurement_code_hash()`
   before citing them, and regenerate with `scripts/eval_multi.py` (needs the audio and the

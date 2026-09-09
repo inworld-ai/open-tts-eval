@@ -73,6 +73,29 @@ def test_transcribe_array_requires_sample_rate_for_whisper():
         transcribe(np.zeros(16000, dtype=np.float32), config)
 
 
+def test_whisper_decoder_is_seeded_per_clip(monkeypatch):
+    import sys
+    import types
+
+    from tts_assess.asr import backends
+
+    seeds: list[int] = []
+    fake_ct2 = types.ModuleType("ctranslate2")
+    fake_ct2.set_random_seed = seeds.append
+    monkeypatch.setitem(sys.modules, "ctranslate2", fake_ct2)
+
+    class FakeModel:
+        def transcribe(self, audio, **kwargs):
+            return iter(()), None
+
+    monkeypatch.setattr(backends, "_load_whisper_model", lambda *a: FakeModel())
+    config = AssessmentConfig.default().asr
+    for _ in range(2):
+        result = transcribe(np.zeros(16000, dtype=np.float32), config, sample_rate=16000)
+        assert result.backend == "faster-whisper" and result.text == ""
+    assert seeds == [backends.ASR_DECODER_SEED, backends.ASR_DECODER_SEED]
+
+
 def test_evaluate_pair_matches_pipeline_row(tmp_path: Path):
     wav = _tone_wav_bytes()
     audio_dir = tmp_path / "audio"
