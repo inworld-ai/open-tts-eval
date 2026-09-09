@@ -4106,14 +4106,14 @@
   },
   "evaluator": {
     "version": "0.1.0",
-    "code_hash": "e38b2c74e6bf43ce",
+    "code_hash": "6f4d8ac1fc8df764",
     "plugin_hash": null,
     "asr": "faster-whisper:base.en",
     "normalization": "english-basic"
   },
   "cache": {
-    "hits": 1000,
-    "misses": 0,
+    "hits": 0,
+    "misses": 1000,
     "dir": ".measure_cache"
   }
 }

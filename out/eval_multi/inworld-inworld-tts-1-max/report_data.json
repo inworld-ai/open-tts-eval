@@ -20,9 +20,9 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.02613672203271184,
-                "lo": 0.013577885160455341,
-                "hi": 0.04366424704205434,
+                "mean": 0.02915723485322466,
+                "lo": 0.014876881810347044,
+                "hi": 0.047978409083873026,
                 "best": false,
                 "worst": false,
                 "sig": false,
@@ -39,9 +39,9 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.004707242757242758,
-                "lo": 0.0006185429154179158,
-                "hi": 0.011936237096237088,
+                "mean": 0.007727755577755579,
+                "lo": 0.0008528169746919748,
+                "hi": 0.017503275682650667,
                 "best": false,
                 "worst": false,
                 "sig": false,
@@ -96,9 +96,9 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.009897106703267369,
-                "lo": 0.005640411530869808,
-                "hi": 0.01581120884692634,
+                "mean": 0.012541113345779445,
+                "lo": 0.006216795914376195,
+                "hi": 0.020806794979870577,
                 "best": false,
                 "worst": false,
                 "sig": false,
@@ -411,7 +411,7 @@
           {
             "na": false,
             "status": "good",
-            "good_rate": 0.993,
+            "good_rate": 0.992,
             "measured": 1000,
             "failed": 0,
             "total": 1000
@@ -441,7 +441,7 @@
           {
             "na": false,
             "status": "good",
-            "good_rate": 0.999,
+            "good_rate": 0.998,
             "measured": 1000,
             "failed": 0,
             "total": 1000
@@ -466,19 +466,19 @@
     ]
   },
   "violations": {
-    "state": "266 violations across 9 metric(s).",
+    "state": "271 violations across 9 metric(s).",
     "counts": [
       {
         "metric": "WER",
         "warn": 81,
-        "fail": 55,
-        "total": 136
+        "fail": 56,
+        "total": 137
       },
       {
         "metric": "CER",
         "warn": 57,
-        "fail": 22,
-        "total": 79
+        "fail": 23,
+        "total": 80
       },
       {
         "metric": "Vowel prolongation",
@@ -489,14 +489,14 @@
       {
         "metric": "Insertions",
         "warn": 6,
-        "fail": 9,
-        "total": 15
+        "fail": 10,
+        "total": 16
       },
       {
         "metric": "repeated span",
         "warn": 0,
-        "fail": 7,
-        "total": 7
+        "fail": 8,
+        "total": 8
       },
       {
         "metric": "NISQA MOS",
@@ -511,21 +511,29 @@
         "total": 2
       },
       {
-        "metric": "tail click detected",
+        "metric": "tail hallucination",
         "warn": 0,
         "fail": 2,
         "total": 2
       },
       {
-        "metric": "tail hallucination",
+        "metric": "tail click detected",
         "warn": 0,
-        "fail": 1,
-        "total": 1
+        "fail": 2,
+        "total": 2
       }
     ],
     "examples": {
       "has_audio": true,
       "rows": [
+        {
+          "metric": "WER",
+          "voice": "Timothy",
+          "value": "3",
+          "expected": "they cut the power at the meridian around ten nobody saw a thing",
+          "heard": "they cut the power at the meridian around ten nobody saw a thing i am done it's coming th…",
+          "audio": "audio/Timothy__utt_0036.wav"
+        },
         {
           "metric": "WER",
           "voice": "Rosalind",
@@ -559,20 +567,20 @@
           "audio": "audio/Reed__utt_0000.wav"
         },
         {
-          "metric": "WER",
-          "voice": "Tessa",
-          "value": "1.333",
-          "expected": "esme esme wait",
-          "heard": "as me as me wait",
-          "audio": "audio/Tessa__utt_0000.wav"
-        },
-        {
           "metric": "CER",
           "voice": "Reed",
           "value": "0.481",
           "expected": "the offer's still on the table marlowe same terms same handshake all you have to do is fo…",
           "heard": "the offer's still on the table marlowe same terms same handshake all you have to do is fo…",
           "audio": "audio/Reed__utt_0080.wav"
+        },
+        {
+          "metric": "CER",
+          "voice": "Tessa",
+          "value": "0.286",
+          "expected": "esme esme wait",
+          "heard": "as me as me wait",
+          "audio": "audio/Tessa__utt_0000.wav"
         },
         {
           "metric": "CER",
@@ -597,14 +605,6 @@
           "expected": "the bank called again i let it ring what else is there to say",
           "heard": "the bank called again what else is there to say",
           "audio": "audio/Jarrah__utt_0050.wav"
-        },
-        {
-          "metric": "CER",
-          "voice": "Jarrah",
-          "value": "0.229",
-          "expected": "i heard you the first time mr vance",
-          "heard": "i will hurt you the first time mr vance",
-          "audio": "audio/Jarrah__utt_0010.wav"
         },
         {
           "metric": "Vowel prolongation",
@@ -648,11 +648,19 @@
         },
         {
           "metric": "Insertions",
-          "voice": "Victor",
-          "value": "0.179",
-          "expected": "he used to read to us every night doing all the voices the wolf and the witch and the lit…",
-          "heard": "he used to read to us every night doing all the voices the wolf and the witch and the lit…",
-          "audio": "audio/Victor__utt_0079.wav"
+          "voice": "Oliver",
+          "value": "0.2",
+          "expected": "she wrote her whole life into those notebooks forty of them stacked in the closet like br…",
+          "heard": "she wrote her whole life into those notebooks forty of them stacked in the closet like br…",
+          "audio": "audio/Oliver__utt_0081.wav"
+        },
+        {
+          "metric": "Insertions",
+          "voice": "Jarrah",
+          "value": "0.125",
+          "expected": "i heard you the first time mr vance",
+          "heard": "i will hurt you the first time mr vance",
+          "audio": "audio/Jarrah__utt_0010.wav"
         },
         {
           "metric": "Insertions",
@@ -677,14 +685,6 @@
           "expected": "the calloways moved in last spring all smiles and casseroles by fall the moving trucks we…",
           "heard": "the calloways moved in last spring all smiles and casseroles by fall the moving trucks we…",
           "audio": "audio/Oliver__utt_0077.wav"
-        },
-        {
-          "metric": "Insertions",
-          "voice": "Jarrah",
-          "value": "0.05",
-          "expected": "the recording cuts out right after the scream nine seconds of static then nothing we have…",
-          "heard": "the recording cuts out right after the scream nine seconds is static then nothing we have…",
-          "audio": "audio/Jarrah__utt_0064.wav"
         },
         {
           "metric": "NISQA MOS",

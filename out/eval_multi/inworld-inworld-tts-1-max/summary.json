@@ -1,9 +1,9 @@
 {
   "sample_count": 1000,
-  "passed": 825,
+  "passed": 824,
   "warned": 99,
-  "failed": 76,
-  "pass_rate": 0.825,
+  "failed": 77,
+  "pass_rate": 0.824,
   "metrics": {
     "arousal_proxy": {
       "count": 1000,
@@ -22,14 +22,14 @@
     "cer": {
       "count": 1000,
       "failed": 0,
-      "mean": 0.009897106703267369,
-      "std": 0.0434576722644159,
+      "mean": 0.012541113345779445,
+      "std": 0.09386215975151202,
       "median": 0.0,
-      "p95": 0.035746753246753214,
+      "p95": 0.036889204545454066,
       "min": 0.0,
-      "max": 0.7142857142857143,
-      "ci_low": 0.005640411530869808,
-      "ci_high": 0.01581120884692634,
+      "max": 2.640625,
+      "ci_low": 0.006216795914376195,
+      "ci_high": 0.020806794979870577,
       "ci_level": 0.95,
       "ci_method": "cluster"
     },
@@ -106,14 +106,14 @@
     "insertion_rate": {
       "count": 1000,
       "failed": 0,
-      "mean": 0.004707242757242758,
-      "std": 0.04996735033651146,
+      "mean": 0.007727755577755579,
+      "std": 0.10712581193924031,
       "median": 0.0,
       "p95": 0.0,
       "min": 0.0,
-      "max": 0.6666666666666666,
-      "ci_low": 0.0006185429154179158,
-      "ci_high": 0.011936237096237088,
+      "max": 3.0,
+      "ci_low": 0.0008528169746919748,
+      "ci_high": 0.017503275682650667,
       "ci_level": 0.95,
       "ci_method": "cluster"
     },
@@ -134,14 +134,14 @@
     "length_ratio": {
       "count": 1000,
       "failed": 0,
-      "mean": 1.0001786266598207,
-      "std": 0.035023400412276966,
+      "mean": 1.002822633302333,
+      "std": 0.09055173783804553,
       "median": 1.0,
       "p95": 1.0105263157894737,
       "min": 0.7704918032786885,
-      "max": 1.7142857142857142,
-      "ci_low": 0.9968342735917115,
-      "ci_high": 1.0040867709634487,
+      "max": 3.640625,
+      "ci_low": 0.9976038110243041,
+      "ci_high": 1.010289926928915,
       "ci_level": 0.95,
       "ci_method": "cluster"
     },
@@ -316,14 +316,14 @@
     "wer": {
       "count": 1000,
       "failed": 0,
-      "mean": 0.02613672203271184,
-      "std": 0.11171967953766627,
+      "mean": 0.02915723485322466,
+      "std": 0.14605103443862463,
       "median": 0.0,
       "p95": 0.11764705882352941,
       "min": 0.0,
-      "max": 1.3333333333333333,
-      "ci_low": 0.013577885160455341,
-      "ci_high": 0.04366424704205434,
+      "max": 3.0,
+      "ci_low": 0.014876881810347044,
+      "ci_high": 0.047978409083873026,
       "ci_level": 0.95,
       "ci_method": "cluster"
     }
@@ -331,13 +331,13 @@
   "violations": {
     "wer": {
       "warn": 81,
-      "fail": 55,
-      "total": 136
+      "fail": 56,
+      "total": 137
     },
     "cer": {
       "warn": 57,
-      "fail": 22,
-      "total": 79
+      "fail": 23,
+      "total": 80
     },
     "vowel_prolongation_score": {
       "warn": 0,
@@ -346,13 +346,13 @@
     },
     "insertion_rate": {
       "warn": 6,
-      "fail": 9,
-      "total": 15
+      "fail": 10,
+      "total": 16
     },
     "repeated_span": {
       "warn": 0,
-      "fail": 7,
-      "total": 7
+      "fail": 8,
+      "total": 8
     },
     "nisqa_mos": {
       "warn": 6,
@@ -364,32 +364,32 @@
       "fail": 0,
       "total": 2
     },
-    "tail_click_detected": {
+    "tail_hallucination": {
       "warn": 0,
       "fail": 2,
       "total": 2
     },
-    "tail_hallucination": {
+    "tail_click_detected": {
       "warn": 0,
-      "fail": 1,
-      "total": 1
+      "fail": 2,
+      "total": 2
     }
   },
   "measurement_failures": {},
   "failure_counts": {
     "warn:wer": 81,
     "warn:cer": 57,
-    "fail:wer": 55,
-    "fail:cer": 22,
+    "fail:wer": 56,
+    "fail:cer": 23,
     "fail:vowel_prolongation_score": 17,
-    "fail:insertion_rate": 9,
-    "fail:repeated_span": 7,
+    "fail:insertion_rate": 10,
+    "fail:repeated_span": 8,
     "warn:nisqa_mos": 6,
     "warn:insertion_rate": 6,
     "warn:silence_ratio": 2,
+    "fail:tail_hallucination": 2,
     "fail:tail_click_detected": 2,
-    "fail:nisqa_mos": 1,
-    "fail:tail_hallucination": 1
+    "fail:nisqa_mos": 1
   },
   "by_voice": {
     "Avery": {
@@ -1820,10 +1820,10 @@
     },
     "Oliver": {
       "sample_count": 100,
-      "passed": 84,
+      "passed": 83,
       "warned": 10,
-      "failed": 6,
-      "pass_rate": 0.84,
+      "failed": 7,
+      "pass_rate": 0.83,
       "metrics": {
         "arousal_proxy": {
           "count": 100,
@@ -1842,14 +1842,14 @@
         "cer": {
           "count": 100,
           "failed": 0,
-          "mean": 0.005802637155318627,
-          "std": 0.015368091416515154,
+          "mean": 0.007358192710874184,
+          "std": 0.021445711541273605,
           "median": 0.0,
-          "p95": 0.030326340326340327,
+          "p95": 0.031016483516483503,
           "min": 0.0,
-          "max": 0.0967741935483871,
-          "ci_low": 0.00321567875590352,
-          "ci_high": 0.00913415340093357,
+          "max": 0.15555555555555556,
+          "ci_low": 0.0037303963851386206,
+          "ci_high": 0.01210323136333988,
           "ci_level": 0.95,
           "ci_method": "iid"
         },
@@ -1926,14 +1926,14 @@
         "insertion_rate": {
           "count": 100,
           "failed": 0,
-          "mean": 0.0013412698412698413,
-          "std": 0.00792824244919508,
+          "mean": 0.0033412698412698416,
+          "std": 0.021387794562490077,
           "median": 0.0,
           "p95": 0.0,
           "min": 0.0,
-          "max": 0.05555555555555555,
-          "ci_low": 0.0,
-          "ci_high": 0.0030716269841269826,
+          "max": 0.2,
+          "ci_low": 0.0002857142857142857,
+          "ci_high": 0.008285714285714285,
           "ci_level": 0.95,
           "ci_method": "iid"
         },
@@ -1954,14 +1954,14 @@
         "length_ratio": {
           "count": 100,
           "failed": 0,
-          "mean": 0.9982710088459844,
-          "std": 0.010747827759795082,
+          "mean": 0.9998265644015398,
+          "std": 0.01905057815301538,
           "median": 1.0,
-          "p95": 1.0092889071337348,
+          "p95": 1.0098859217008038,
           "min": 0.9216589861751152,
-          "max": 1.0187793427230047,
-          "ci_low": 0.9960319109441269,
-          "ci_high": 1.0002062310402131,
+          "max": 1.1555555555555554,
+          "ci_low": 0.9967148137330828,
+          "ci_high": 1.0038957111338749,
           "ci_level": 0.95,
           "ci_method": "iid"
         },
@@ -2136,14 +2136,14 @@
         "wer": {
           "count": 100,
           "failed": 0,
-          "mean": 0.01778250633822864,
-          "std": 0.039383105232363394,
+          "mean": 0.019782506338228638,
+          "std": 0.04334951519089826,
           "median": 0.0,
-          "p95": 0.111437908496732,
+          "p95": 0.11801470588235292,
           "min": 0.0,
-          "max": 0.18181818181818182,
-          "ci_low": 0.01071052143392869,
-          "ci_high": 0.02645372757499675,
+          "max": 0.2,
+          "ci_low": 0.011846507011831958,
+          "ci_high": 0.029023018657810318,
           "ci_level": 0.95,
           "ci_method": "iid"
         }
@@ -2151,18 +2151,23 @@
       "violations": {
         "wer": {
           "warn": 9,
-          "fail": 6,
-          "total": 15
+          "fail": 7,
+          "total": 16
         },
         "cer": {
           "warn": 5,
-          "fail": 1,
-          "total": 6
+          "fail": 2,
+          "total": 7
         },
         "insertion_rate": {
           "warn": 2,
-          "fail": 0,
-          "total": 2
+          "fail": 1,
+          "total": 3
+        },
+        "repeated_span": {
+          "warn": 0,
+          "fail": 1,
+          "total": 1
         }
       },
       "measurement_failures": {}
@@ -3256,10 +3261,10 @@
     },
     "Timothy": {
       "sample_count": 100,
-      "passed": 88,
+      "passed": 87,
       "warned": 6,
-      "failed": 6,
-      "pass_rate": 0.88,
+      "failed": 7,
+      "pass_rate": 0.87,
       "metrics": {
         "arousal_proxy": {
           "count": 100,
@@ -3278,14 +3283,14 @@
         "cer": {
           "count": 100,
           "failed": 0,
-          "mean": 0.007237737607916411,
-          "std": 0.032615936628845474,
+          "mean": 0.03364398760791641,
+          "std": 0.2653426071523923,
           "median": 0.0,
-          "p95": 0.025946275946275927,
+          "p95": 0.03194444444444443,
           "min": 0.0,
-          "max": 0.2857142857142857,
-          "ci_low": 0.0020640702318111973,
-          "ci_high": 0.01463593989533681,
+          "max": 2.640625,
+          "ci_low": 0.0028964300427938875,
+          "ci_high": 0.08891714018558493,
           "ci_level": 0.95,
           "ci_method": "iid"
         },
@@ -3362,14 +3367,14 @@
         "insertion_rate": {
           "count": 100,
           "failed": 0,
-          "mean": 0.007108974358974358,
-          "std": 0.0666958659756539,
+          "mean": 0.03710897435897435,
+          "std": 0.30662271867458796,
           "median": 0.0,
           "p95": 0.0,
           "min": 0.0,
-          "max": 0.6666666666666666,
-          "ci_low": 0.0,
-          "ci_high": 0.02075,
+          "max": 3.0,
+          "ci_low": 0.0001923076923076923,
+          "ci_high": 0.10352708333333333,
           "ci_level": 0.95,
           "ci_method": "iid"
         },
@@ -3390,14 +3395,14 @@
         "length_ratio": {
           "count": 100,
           "failed": 0,
-          "mean": 0.9999386346053223,
-          "std": 0.018864940162797442,
+          "mean": 1.0263448846053222,
+          "std": 0.2647416919743865,
           "median": 1.0,
-          "p95": 1.010669642857143,
+          "p95": 1.013434114759648,
           "min": 0.9216589861751152,
-          "max": 1.1428571428571428,
-          "ci_low": 0.9965026513021921,
-          "ci_high": 1.0038753976356751,
+          "max": 3.640625,
+          "ci_low": 0.9973819048632447,
+          "ci_high": 1.0809782324661905,
           "ci_level": 0.95,
           "ci_method": "iid"
         },
@@ -3572,14 +3577,14 @@
         "wer": {
           "count": 100,
           "failed": 0,
-          "mean": 0.026902451163051514,
-          "std": 0.14325011182424263,
+          "mean": 0.0569024511630515,
+          "std": 0.3299850647408434,
           "median": 0.0,
-          "p95": 0.08406862745098034,
+          "p95": 0.0990196078431372,
           "min": 0.0,
-          "max": 1.3333333333333333,
-          "ci_low": 0.006246952426695664,
-          "ci_high": 0.058715102654334016,
+          "max": 3.0,
+          "ci_low": 0.00896092847902311,
+          "ci_high": 0.1290687307709004,
           "ci_level": 0.95,
           "ci_method": "iid"
         }
@@ -3587,20 +3592,25 @@
       "violations": {
         "wer": {
           "warn": 5,
-          "fail": 4,
-          "total": 9
+          "fail": 5,
+          "total": 10
         },
         "cer": {
           "warn": 3,
-          "fail": 2,
-          "total": 5
+          "fail": 3,
+          "total": 6
         },
         "insertion_rate": {
           "warn": 0,
-          "fail": 1,
-          "total": 1
+          "fail": 2,
+          "total": 2
         },
         "repeated_span": {
+          "warn": 0,
+          "fail": 2,
+          "total": 2
+        },
+        "tail_hallucination": {
           "warn": 0,
           "fail": 1,
           "total": 1
@@ -3620,10 +3630,10 @@
     },
     "Victor": {
       "sample_count": 100,
-      "passed": 83,
+      "passed": 84,
       "warned": 10,
-      "failed": 7,
-      "pass_rate": 0.83,
+      "failed": 6,
+      "pass_rate": 0.84,
       "metrics": {
         "arousal_proxy": {
           "count": 100,
@@ -3642,14 +3652,14 @@
         "cer": {
           "count": 100,
           "failed": 0,
-          "mean": 0.007274001080525506,
-          "std": 0.024353113289794847,
+          "mean": 0.005752261950090724,
+          "std": 0.019472772021619573,
           "median": 0.0,
-          "p95": 0.0365601503759398,
+          "p95": 0.03194444444444443,
           "min": 0.0,
-          "max": 0.15217391304347827,
-          "ci_low": 0.0031344875311437167,
-          "ci_high": 0.0125143379973275,
+          "max": 0.13333333333333333,
+          "ci_low": 0.0024531111420859402,
+          "ci_high": 0.010095966275102277,
           "ci_level": 0.95,
           "ci_method": "iid"
         },
@@ -3726,14 +3736,14 @@
         "insertion_rate": {
           "count": 100,
           "failed": 0,
-          "mean": 0.0032948717948717947,
-          "std": 0.021876612110477967,
+          "mean": 0.0015,
+          "std": 0.012722762548624682,
           "median": 0.0,
           "p95": 0.0,
           "min": 0.0,
-          "max": 0.1794871794871795,
+          "max": 0.125,
           "ci_low": 0.0,
-          "ci_high": 0.008385737179487172,
+          "ci_high": 0.00425,
           "ci_level": 0.95,
           "ci_method": "iid"
         },
@@ -3754,14 +3764,14 @@
         "length_ratio": {
           "count": 100,
           "failed": 0,
-          "mean": 1.0000584104457537,
-          "std": 0.020730490131181226,
+          "mean": 0.9985366713153186,
+          "std": 0.013917098403730739,
           "median": 1.0,
-          "p95": 1.0107042253521128,
+          "p95": 1.0056893592677345,
           "min": 0.9216589861751152,
-          "max": 1.1521739130434783,
-          "ci_low": 0.9961782070304878,
-          "ci_high": 1.0045095413684955,
+          "max": 1.0476190476190477,
+          "ci_low": 0.9956191090128782,
+          "ci_high": 1.001121144379214,
           "ci_level": 0.95,
           "ci_method": "iid"
         },
@@ -3936,14 +3946,14 @@
         "wer": {
           "count": 100,
           "failed": 0,
-          "mean": 0.01879902680962716,
-          "std": 0.06299477934354544,
+          "mean": 0.017004155014755364,
+          "std": 0.060892059221872116,
           "median": 0.0,
-          "p95": 0.0990196078431372,
+          "p95": 0.09126559714795007,
           "min": 0.0,
           "max": 0.5,
-          "ci_low": 0.008520472888058538,
-          "ci_high": 0.033222560046685924,
+          "ci_low": 0.006984109615519462,
+          "ci_high": 0.03148926085533721,
           "ci_level": 0.95,
           "ci_method": "iid"
         }
@@ -3951,22 +3961,17 @@
       "violations": {
         "wer": {
           "warn": 6,
-          "fail": 5,
-          "total": 11
+          "fail": 4,
+          "total": 10
         },
         "cer": {
           "warn": 5,
-          "fail": 3,
-          "total": 8
+          "fail": 2,
+          "total": 7
         },
         "nisqa_mos": {
           "warn": 2,
           "fail": 0,
-          "total": 2
-        },
-        "insertion_rate": {
-          "warn": 0,
-          "fail": 2,
           "total": 2
         },
         "vowel_prolongation_score": {
@@ -3974,7 +3979,7 @@
           "fail": 2,
           "total": 2
         },
-        "repeated_span": {
+        "insertion_rate": {
           "warn": 0,
           "fail": 1,
           "total": 1
@@ -4107,14 +4112,14 @@
   },
   "evaluator": {
     "version": "0.1.0",
-    "code_hash": "e38b2c74e6bf43ce",
+    "code_hash": "6f4d8ac1fc8df764",
     "plugin_hash": null,
     "asr": "faster-whisper:base.en",
     "normalization": "english-basic"
   },
   "cache": {
-    "hits": 1000,
-    "misses": 0,
+    "hits": 0,
+    "misses": 1000,
     "dir": ".measure_cache"
   }
 }

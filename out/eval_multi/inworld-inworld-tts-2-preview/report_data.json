@@ -20,9 +20,9 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.019040901591152255,
-                "lo": 0.010821106051182736,
-                "hi": 0.029627637868704627,
+                "mean": 0.018211530961781627,
+                "lo": 0.010087294388916748,
+                "hi": 0.028965304752262406,
                 "best": false,
                 "worst": false,
                 "sig": false,
@@ -39,9 +39,9 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.00457844574436646,
-                "lo": 0.0011794113979583935,
-                "hi": 0.009396940491839785,
+                "mean": 0.003749075114995831,
+                "lo": 0.0006989168147496165,
+                "hi": 0.008558499134603674,
                 "best": false,
                 "worst": false,
                 "sig": false,
@@ -96,9 +96,9 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.007221180861312117,
-                "lo": 0.00457497371515605,
-                "hi": 0.010343252613503787,
+                "mean": 0.006544108912313939,
+                "lo": 0.0040928846360284475,
+                "hi": 0.009533444798771731,
                 "best": false,
                 "worst": false,
                 "sig": false,
@@ -411,7 +411,7 @@
           {
             "na": false,
             "status": "good",
-            "good_rate": 0.993,
+            "good_rate": 0.995,
             "measured": 1000,
             "failed": 0,
             "total": 1000
@@ -441,7 +441,7 @@
           {
             "na": false,
             "status": "good",
-            "good_rate": 0.997,
+            "good_rate": 0.998,
             "measured": 1000,
             "failed": 0,
             "total": 1000
@@ -466,19 +466,19 @@
     ]
   },
   "violations": {
-    "state": "245 violations across 9 metric(s).",
+    "state": "236 violations across 9 metric(s).",
     "counts": [
       {
         "metric": "WER",
         "warn": 69,
-        "fail": 45,
-        "total": 114
+        "fail": 43,
+        "total": 112
       },
       {
         "metric": "CER",
         "warn": 53,
-        "fail": 14,
-        "total": 67
+        "fail": 12,
+        "total": 65
       },
       {
         "metric": "Vowel prolongation",
@@ -489,14 +489,8 @@
       {
         "metric": "Insertions",
         "warn": 8,
-        "fail": 7,
-        "total": 15
-      },
-      {
-        "metric": "repeated span",
-        "warn": 0,
-        "fail": 7,
-        "total": 7
+        "fail": 5,
+        "total": 13
       },
       {
         "metric": "tail click detected",
@@ -505,15 +499,21 @@
         "total": 7
       },
       {
-        "metric": "tail hallucination",
+        "metric": "repeated span",
         "warn": 0,
-        "fail": 3,
-        "total": 3
+        "fail": 5,
+        "total": 5
       },
       {
         "metric": "NISQA MOS",
         "warn": 2,
         "fail": 0,
+        "total": 2
+      },
+      {
+        "metric": "tail hallucination",
+        "warn": 0,
+        "fail": 2,
         "total": 2
       },
       {
@@ -553,23 +553,15 @@
         {
           "metric": "WER",
           "voice": "Timothy",
-          "value": "0.727",
+          "value": "0.636",
           "expected": "the photographs were fakes every last one of them detective sung",
           "heard": "the photographs were fakes every last one of them detective sung the the the the the the …",
           "audio": "audio/Timothy__utt_0054.wav"
         },
         {
           "metric": "WER",
-          "voice": "Avery",
-          "value": "0.538",
-          "expected": "he walks in like he owns the whole room maybe someday he will",
-          "heard": "he walks in like he owns the whole room maybe someday he will the the the the the the the",
-          "audio": "audio/Avery__utt_0046.wav"
-        },
-        {
-          "metric": "CER",
           "voice": "Reed",
-          "value": "0.397",
+          "value": "0.467",
           "expected": "my father built this place with his hands i am not selling it to you",
           "heard": "my father built this place with his hands i am not selling it to you i am not selling it …",
           "audio": "audio/Reed__utt_0030.wav"
@@ -581,14 +573,6 @@
           "expected": "i heard you the first time mr vance",
           "heard": "i heard you the first time missed events",
           "audio": "audio/Tessa__utt_0010.wav"
-        },
-        {
-          "metric": "CER",
-          "voice": "Oliver",
-          "value": "0.156",
-          "expected": "she wrote her whole life into those notebooks forty of them stacked in the closet like br…",
-          "heard": "she wrote her whole life into those notebooks forty of them stacked in the closet like br…",
-          "audio": "audio/Oliver__utt_0081.wav"
         },
         {
           "metric": "CER",
@@ -605,6 +589,22 @@
           "expected": "i found her diary under the floorboards i wish to god i had not",
           "heard": "i found a diary under the floorboards i wished a god i had not",
           "audio": "audio/Jarrah__utt_0040.wav"
+        },
+        {
+          "metric": "CER",
+          "voice": "Tessa",
+          "value": "0.103",
+          "expected": "tell halloran the shipment's late again",
+          "heard": "tell holleren the shipments late again",
+          "audio": "audio/Tessa__utt_0007.wav"
+        },
+        {
+          "metric": "CER",
+          "voice": "Reed",
+          "value": "0.091",
+          "expected": "the keys were in his coat the whole time the whole time",
+          "heard": "the keys ring his coat the whole time the whole time",
+          "audio": "audio/Reed__utt_0016.wav"
         },
         {
           "metric": "Vowel prolongation",
@@ -687,14 +687,6 @@
           "audio": "audio/Jarrah__utt_0057.wav"
         },
         {
-          "metric": "repeated span",
-          "voice": "Timothy",
-          "value": "flagged",
-          "expected": "he kept the ticket stub in his wallet for eighteen years if you can believ e it",
-          "heard": "he kept the ticket stub in his wallet for eighteen years if you can believe it it",
-          "audio": "audio/Timothy__utt_0034.wav"
-        },
-        {
           "metric": "tail click detected",
           "voice": "Timothy",
           "value": "flagged",
@@ -725,6 +717,14 @@
           "expected": "that's not what your brother told me though",
           "heard": "that's not what your brother told me though",
           "audio": "audio/Timothy__utt_0018.wav"
+        },
+        {
+          "metric": "tail click detected",
+          "voice": "Lauren",
+          "value": "flagged",
+          "expected": "bianca you still there hello",
+          "heard": "bianca you still there hello",
+          "audio": "audio/Lauren__utt_0021.wav"
         }
       ]
     }

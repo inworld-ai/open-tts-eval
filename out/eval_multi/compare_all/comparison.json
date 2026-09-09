@@ -2,7 +2,7 @@
   "title": "Comparative Report",
   "subtitle": null,
   "question": "How do these voices/models handle messy dialogue text?",
-  "generated": "2026-09-09T18:22:42.760500+00:00",
+  "generated": "2026-09-09T19:37:15.659345+00:00",
   "labels": [
     "inworld-tts-2-preview",
     "inworld-1.5-max",
@@ -23,9 +23,9 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.019040901591152255,
-                "lo": 0.010821106051182736,
-                "hi": 0.029627637868704627,
+                "mean": 0.018211530961781627,
+                "lo": 0.010087294388916748,
+                "hi": 0.028965304752262406,
                 "best": true,
                 "worst": false,
                 "sig": false,
@@ -47,12 +47,12 @@
               },
               {
                 "na": false,
-                "mean": 0.02613672203271184,
-                "lo": 0.013577885160455341,
-                "hi": 0.04366424704205434,
+                "mean": 0.02915723485322466,
+                "lo": 0.014876881810347044,
+                "hi": 0.047978409083873026,
                 "best": false,
                 "worst": true,
-                "sig": false,
+                "sig": true,
                 "n": 1000,
                 "failed": 0,
                 "total": 1000
@@ -66,10 +66,10 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.00457844574436646,
-                "lo": 0.0011794113979583935,
-                "hi": 0.009396940491839785,
-                "best": false,
+                "mean": 0.003749075114995831,
+                "lo": 0.0006989168147496165,
+                "hi": 0.008558499134603674,
+                "best": true,
                 "worst": false,
                 "sig": false,
                 "n": 1000,
@@ -81,7 +81,7 @@
                 "mean": 0.003863585434173669,
                 "lo": 0.0005241548892284186,
                 "hi": 0.009853217468805702,
-                "best": true,
+                "best": false,
                 "worst": false,
                 "sig": false,
                 "n": 1000,
@@ -90,9 +90,9 @@
               },
               {
                 "na": false,
-                "mean": 0.004707242757242758,
-                "lo": 0.0006185429154179158,
-                "hi": 0.011936237096237088,
+                "mean": 0.007727755577755579,
+                "lo": 0.0008528169746919748,
+                "hi": 0.017503275682650667,
                 "best": false,
                 "worst": true,
                 "sig": false,
@@ -195,10 +195,10 @@
             "cells": [
               {
                 "na": false,
-                "mean": 0.007221180861312117,
-                "lo": 0.00457497371515605,
-                "hi": 0.010343252613503787,
-                "best": false,
+                "mean": 0.006544108912313939,
+                "lo": 0.0040928846360284475,
+                "hi": 0.009533444798771731,
+                "best": true,
                 "worst": false,
                 "sig": false,
                 "n": 1000,
@@ -210,7 +210,7 @@
                 "mean": 0.007050950979711926,
                 "lo": 0.004085578170695513,
                 "hi": 0.011091580706310692,
-                "best": true,
+                "best": false,
                 "worst": false,
                 "sig": false,
                 "n": 1000,
@@ -219,9 +219,9 @@
               },
               {
                 "na": false,
-                "mean": 0.009897106703267369,
-                "lo": 0.005640411530869808,
-                "hi": 0.01581120884692634,
+                "mean": 0.012541113345779445,
+                "lo": 0.006216795914376195,
+                "hi": 0.020806794979870577,
                 "best": false,
                 "worst": true,
                 "sig": true,
@@ -862,7 +862,7 @@
           {
             "na": false,
             "status": "good",
-            "good_rate": 0.993,
+            "good_rate": 0.995,
             "measured": 1000,
             "failed": 0,
             "total": 1000
@@ -878,7 +878,7 @@
           {
             "na": false,
             "status": "good",
-            "good_rate": 0.993,
+            "good_rate": 0.992,
             "measured": 1000,
             "failed": 0,
             "total": 1000
@@ -924,7 +924,7 @@
           {
             "na": false,
             "status": "good",
-            "good_rate": 0.997,
+            "good_rate": 0.998,
             "measured": 1000,
             "failed": 0,
             "total": 1000
@@ -940,7 +940,7 @@
           {
             "na": false,
             "status": "good",
-            "good_rate": 0.999,
+            "good_rate": 0.998,
             "measured": 1000,
             "failed": 0,
             "total": 1000
