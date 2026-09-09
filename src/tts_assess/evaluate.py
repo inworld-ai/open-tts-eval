@@ -82,13 +82,17 @@ def measure_pair(
 
     reference: np.ndarray | None = None
     if reference_audio is not None:
-        try:
-            if isinstance(reference_audio, bytes | bytearray):
+        if isinstance(reference_audio, bytes | bytearray):
+            try:
                 reference, reference_sample_rate, _ = read_audio_bytes(bytes(reference_audio))
-            elif reference_sample_rate is not None:
-                reference = reference_audio
-        except Exception:
-            reference = None
+            except Exception:
+                reference = None
+        else:
+            if reference_sample_rate is None:
+                raise ValueError(
+                    "reference_sample_rate is required when reference_audio is a decoded array"
+                )
+            reference = np.asarray(reference_audio, dtype=np.float32)
     measured.update(
         compute_optional_metrics(
             audio,
