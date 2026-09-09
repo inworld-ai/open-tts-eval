@@ -65,7 +65,16 @@ Key flags: `--provider/-p`, `--model` (repeatable, latest first), `--voice/-v` (
 `--num-voices N` (+ `--shuffle-voices --seed S` for a seeded diverse pick), `--format`
 (WAV/LINEAR16/MP3/FLAC/OGG_OPUS/…; **WAV is the safe default** — `soundfile` must decode it),
 `--sample-rate`, `--limit N` (first N texts, for smoke runs), `--concurrency`, `--overwrite`,
-`--language`, `--speaking-rate`, `--temperature`.
+`--language`, `--speaking-rate`, `--temperature`, `--allow-model-mismatch` (keep clips the provider
+reports as served by another model; by default they are errors).
+
+- Controls are only accepted where the adapter transmits them: Inworld takes speaking rate and
+  temperature; ElevenLabs takes speaking rate (`voice_settings.speed`) and `language_code` for
+  language-enforcing models only; Hume takes speaking rate (utterance `speed`) and always pins
+  `version`. Anything else raises `ProviderError` instead of being silently dropped.
+- Each manifest row's `metadata` records `api_model` / `returned_model`, `sent_request` (body minus
+  text), probed `sample_rate_hz` / `channels` / `duration_sec` plus `requested_sample_rate_hz`, and a
+  `sampling_fingerprint`. Ids that sanitize to the same file name get a hash suffix (no overwrites).
 
 - Datasets: `.txt` (one utterance/line), `.json`/`.jsonl` (objects or bare strings with a `text`
   field; optional `id`, `language`), or `.csv` with a `text` column. Bundled benchmark:
@@ -112,20 +121,26 @@ tts-assess compare out/samples/inworld-inworld-tts-2 out/samples/inworld-inworld
 
 Positional args are run dirs (or `results.jsonl` paths); `--label` (repeatable, one per run) sets
 column names. Runs must have matching text/language cohorts and equivalent per-speaker sampling
-profiles, although provider-specific sample and voice IDs may differ. Writes `comparison.html` +
-`comparison.json`.
+profiles, although provider-specific sample and voice IDs may differ. Runs must also have been
+scored by the same evaluator (`asr_backend`/`asr_model` on rows, and the `evaluator.code_hash` /
+`plugin_hash` / `normalization` stamp); runs without the stamp only warn. Rows whose measurement
+failed stay failed when thresholds are re-applied. Writes `comparison.html` + `comparison.json`.
 
 Both reports share one **minimal black-and-white** layout (no CDN/scripts, fully offline):
 - **Metric Comparison** — metrics grouped **Accuracy** (WER, insertion/deletion/substitution, CER),
   **NISQAv2** (MOS + noisiness/discontinuity/coloration/loudness), **Subjective** (chars/sec,
   arousal, expressiveness), **Silence** (silence ratio, lead/tail silence). Each cell = mean with a
-  95% bootstrap CI beneath; best run per metric green, worst red, `*` when a CI doesn't overlap the
-  best; Silence is uncolored.
+  95% **cluster bootstrap over texts** CI beneath (clips sharing a text are resampled together);
+  best run per metric green, worst red, `*` when the paired per-text difference to the best run
+  excludes zero; Silence is uncolored. `n=measured/total · k failed` appears when a cell covers
+  fewer clips than the run has.
 - **Model Health** — per threshold-backed metric, the share of clips passing its per-sample
-  threshold (a `pass if …` rule), graded good ≥99% / warn ≥95% / fail <95% (configurable).
-  WER/CER/insertions are omitted here; vowel prolongation follows its configured threshold.
-- **Threshold Violations** (single-run report only) — warn/fail counts + worst examples showing
-  normalized `expected` vs `heard`, an `<audio>` player if the clip exists, each sample once.
+  threshold (a `pass if …` rule), graded good ≥99% / warn ≥95% / fail <95% (configurable). Failed
+  measurements count as not passing. WER/CER/insertions are omitted here; the hallucination flags
+  (`empty_transcript`, `repeated_span`, `tail_hallucination`, `tail_click_detected`) are rows.
+- **Threshold Violations** (single-run report only) — warn/fail counts per metric and per failed
+  measurement stage (audio/ASR/NISQA/…), worst examples showing normalized `expected` vs `heard`
+  (or the error text), an `<audio>` player if the clip exists, each sample once.
 
 ---
 
@@ -150,6 +165,7 @@ thresholds:                 # per-sample pass/warn/fail bands (see below)
   wer: {warn: 0.05, fail: 0.10}
   vowel_prolongation_score: {fail: 0.8}
   nisqa_mos: {warn_below: 3.3, fail_below: 2.8}
+  repeated_span: {fail_if_true: true}   # also empty_transcript, tail_hallucination, tail_click_detected
 reporting:
   confidence_level: 0.95
   bootstrap_resamples: 2000
@@ -170,12 +186,21 @@ Unknown config fields are rejected instead of being silently ignored.
 
 - **Accuracy (lower better):** `wer`, `cer`, `insertion_rate`, `deletion_rate`, `substitution_rate`.
 - **NISQAv2 (higher better, 1–5):** `nisqa_mos` + `nisqa_noisiness/discontinuity/coloration/loudness`.
-- **Audio health (lower better):** `clipping_ratio`, `silence_ratio`, `leading/trailing_silence_sec`,
-  `tail_click_score` (+ boolean `tail_click_detected` at score ≥ 4.0).
+- **Audio health (lower better):** `clipping_ratio`, `silence_ratio`, `leading/trailing_silence_sec`
+  (frame RMS below `max(min(1.5·p20, 0.1·p95), −80 dBFS)`, percentiles over the span between the
+  first and last non-silent frame, so padding only adds silence), `tail_click_score` (largest
+  sample jump in the last 30 ms / RMS of the preceding 200 ms, **computed at 24 kHz** whatever the
+  file's rate; boolean `tail_click_detected` at score ≥ 4.0).
 - **Pacing/subjective (neutral):** `duration_sec`, `chars_per_second`, `arousal_proxy`;
-  `expressiveness_proxy`; `vowel_prolongation_score` (seconds of longest vowel run; the default
-  threshold fails values at or above 0.8s).
+  `expressiveness_proxy`; `vowel_prolongation_score` (seconds of the longest loud low-centroid run;
+  the loudness cut comes from non-silent frames and is capped at half the speech level so a longer
+  vowel never scores shorter; the default threshold fails values at or above 0.8s).
 - **Speaker (higher better):** `speaker_similarity` (needs `reference_audio_path`).
+- **NISQA** runs on the clip at its native rate (not downsampled to 16 kHz); the model instance is
+  cached per rate.
+- **Hallucination flags (boolean, fail if true):** `empty_transcript`, `repeated_span` (an adjacent
+  repeat in the transcript that the reference does not contain), `tail_hallucination`.
+- A NaN/Inf value fails its threshold as `invalid:<metric>`; a NaN sample fails the clip at decode.
 
 ## Repo map
 
@@ -183,14 +208,16 @@ Unknown config fields are rejected instead of being silently ignored.
 src/tts_assess/
   cli.py                       # Typer CLI: run / sample / compare / voices / init-config / preview
   config.py                    # pydantic config + default thresholds
-  pipeline.py                  # run_assessment: ASR→normalize→metrics→thresholds→report; measure cache
+  pipeline.py                  # run_assessment over a manifest: cache, thresholds, reports
+  evaluate.py                  # measure_pair / evaluate_pair: per-pair core (bytes or arrays), shared by pipeline + services
+  provenance.py                # evaluator fingerprint (version, measurement code hash, plugin hash)
   asr/backends.py              # faster-whisper + mock (model cached via lru_cache)
   audio/features.py            # decode once; rms/peak/clipping/silence/tail-click
   normalization/               # english-basic (+ nemo, plugin)
   metrics/                     # text (jiwer WER/CER + hallucination heuristics), audio, optional (NISQA/ECAPA/prosody)
   reporting/
-    aggregate.py               # summarize: means, bootstrap CI, violations, by-voice
-    stats.py                   # bootstrap CI + CI-overlap significance
+    aggregate.py               # summarize: means, cluster-bootstrap CI, coverage, violations, by-voice
+    stats.py                   # iid / cluster bootstrap CI + paired per-text difference CI
     metrics_meta.py            # metric direction + display names
     thresholds.py              # classify_row / evaluate_thresholds
     compare.py                 # build_comparison + build_run_report (+ Model Health, violations)
@@ -202,7 +229,8 @@ src/tts_assess/
 scripts/sample_multi.py        # reproducible multi-provider sampling
 scripts/eval_multi.py          # evaluate all runs in place + build compare_all
 data/…open_benchmak.en.json    # bundled benchmark dataset
-out/eval_multi/                # example evaluated runs + compare_all report (audio git-ignored)
+out/eval_multi/                # example evaluated runs + compare_all report (audio git-ignored);
+                               # produced by an EARLIER evaluator — regenerate before quoting numbers
 ```
 
 ## Gotchas
@@ -217,6 +245,15 @@ out/eval_multi/                # example evaluated runs + compare_all report (au
   the boolean `tail_click_detected` or a clipped/percentile view.
 - Competitor keys may be dead or quota-limited; the sampler records per-sample errors and continues.
   Use `--limit` for cheap smoke runs.
+- The measurement cache key includes a hash of the measurement modules and of any normalizer
+  plugin's source (`evaluator.code_hash` / `plugin_hash`), plus `_MEASUREMENT_CACHE_VERSION` in
+  `pipeline.py`. Editing metric or normalizer code therefore recomputes everything (ASR included);
+  editing reporting code does not. Failed optional metrics are never cached.
+- `compare` refuses runs scored by different ASR/normalizer/measurement code. Old runs without an
+  `evaluator` stamp produce a warning; re-evaluate them rather than reasoning about mixed scores.
+- The checked-in `out/eval_multi/` results predate the reference-aware `repeated_span` rule and the
+  current silence / prolongation / NISQA definitions. Regenerate with `scripts/eval_multi.py` (needs
+  the audio and the `[asr,quality]` extras) before citing them.
 
 ## Extending — add a provider
 
