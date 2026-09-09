@@ -17,6 +17,10 @@ _EXTENSIONS = {
     "MULAW": "wav",
 }
 
+# Optional synthesis controls a request may carry. Adapters declare which of
+# these they actually transmit (see TTSProvider.supported_controls).
+SYNTHESIS_CONTROLS: tuple[str, ...] = ("speaking_rate", "temperature")
+
 
 class ProviderError(RuntimeError):
     """Raised when a TTS provider request fails."""
@@ -38,8 +42,16 @@ class SynthesisRequest:
 class SynthesisResult:
     audio: bytes
     audio_encoding: str
+    # Nominal rate. The sampler probes the returned bytes and records the actual
+    # rate, so adapters that cannot know it may pass the requested value.
     sample_rate_hz: int
     usage: dict = field(default_factory=dict)
+    # Model the provider reports having used (None when the API does not say).
+    # Lets the sampler detect silent re-routing to a different model.
+    model_id: str | None = None
+    # The request body actually sent, minus the text; recorded for provenance
+    # so run metadata never claims a setting that was not transmitted.
+    request_sent: dict = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -62,6 +74,11 @@ class TTSProvider(ABC):
     # When set, the provider always emits this audio encoding regardless of the
     # requested one (competitor APIs each have a preferred decodable format).
     forced_encoding: str | None = None
+    # Synthesis controls this adapter transmits. Built-in adapters restrict this
+    # to what their API accepts and call ``check_request`` so a control that
+    # would be silently dropped is rejected instead. Custom providers default to
+    # permissive; narrow it when your API ignores a control.
+    supported_controls: frozenset[str] = frozenset(SYNTHESIS_CONTROLS)
 
     @abstractmethod
     def synthesize(self, request: SynthesisRequest) -> SynthesisResult:
@@ -74,6 +91,19 @@ class TTSProvider(ABC):
     def output_encoding(self, requested: str) -> str:
         """The encoding this provider will actually produce for a request."""
         return self.forced_encoding or requested
+
+    def check_request(self, request: SynthesisRequest) -> None:
+        """Reject controls this provider cannot transmit."""
+        unsupported = [
+            control
+            for control in SYNTHESIS_CONTROLS
+            if getattr(request, control) is not None and control not in self.supported_controls
+        ]
+        if unsupported:
+            raise ProviderError(
+                f"{self.name} does not support {', '.join(unsupported)}; "
+                "unset it rather than record a setting the audio was not produced with"
+            )
 
 
 def decode_audio_payload(encoded: str) -> bytes:
@@ -96,3 +126,8 @@ def decode_audio_payload(encoded: str) -> bytes:
 
 def file_extension(encoding: str) -> str:
     return _EXTENSIONS.get(encoding.upper(), "bin")
+
+
+def redact_text(payload: dict) -> dict:
+    """Copy of a request body without the utterance text (kept elsewhere in the row)."""
+    return {key: value for key, value in payload.items() if key != "text"}

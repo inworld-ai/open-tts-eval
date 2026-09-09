@@ -20,15 +20,23 @@ class HumeProvider(TTSProvider):
     forced_encoding = "WAV"
     base_url = "https://api.hume.ai"
     voice_provider = "HUME_AI"
+    # Per-utterance ``speed`` is the only pacing control; there is no temperature.
+    supported_controls = frozenset({"speaking_rate"})
 
-    @staticmethod
-    def _version(model_id: str) -> str | None:
-        """Map a friendly model label to Hume's ``version`` field (None omits it)."""
+    @classmethod
+    def _version(cls, model_id: str) -> str:
+        """Map a friendly model label to Hume's ``version`` field.
+
+        Always explicit: when ``version`` is omitted the API picks a model
+        itself, which would leave the run's model label unverifiable.
+        """
         model = (model_id or "").lower()
+        if model in ("", "default"):
+            return cls._version(cls.default_model)
         if model in ("2", "octave-2", "octave2"):
             return "2"
-        if model in ("", "1", "octave-1", "octave1", "octave"):
-            return None
+        if model in ("1", "octave-1", "octave1", "octave"):
+            return "1"
         return model_id
 
     def __init__(
@@ -45,14 +53,17 @@ class HumeProvider(TTSProvider):
         return {"X-Hume-Api-Key": self._key, "Content-Type": "application/json"}
 
     def synthesize(self, request: SynthesisRequest) -> SynthesisResult:
+        self.check_request(request)
         voice = {"name": request.voice_id, "provider": self.voice_provider}
-        payload = {
-            "utterances": [{"text": request.text, "voice": voice}],
-            "format": {"type": "wav"},
-        }
+        utterance: dict[str, object] = {"text": request.text, "voice": voice}
+        if request.speaking_rate is not None:
+            utterance["speed"] = request.speaking_rate
         version = self._version(request.model_id)
-        if version:
-            payload["version"] = version
+        payload: dict[str, object] = {
+            "utterances": [utterance],
+            "format": {"type": "wav"},
+            "version": version,
+        }
         status, data = _http.call(
             self._transport,
             "POST",
@@ -64,8 +75,18 @@ class HumeProvider(TTSProvider):
         )
         if status != 200:
             raise ProviderError(f"Hume synthesize failed: HTTP {status}: {_http.snippet(data)}")
+        sent = {
+            "utterances": [{k: v for k, v in utterance.items() if k != "text"}],
+            "format": payload["format"],
+            "version": version,
+        }
         return SynthesisResult(
-            audio=data, audio_encoding="WAV", sample_rate_hz=request.sample_rate_hz, usage={}
+            audio=data,
+            audio_encoding="WAV",
+            sample_rate_hz=request.sample_rate_hz,
+            usage={},
+            model_id=f"octave-{version}" if version in ("1", "2") else version,
+            request_sent=sent,
         )
 
     def list_voices(self) -> list[Voice]:

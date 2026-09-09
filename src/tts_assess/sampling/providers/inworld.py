@@ -13,6 +13,7 @@ from tts_assess.sampling.providers.base import (
     SynthesisResult,
     TTSProvider,
     Voice,
+    redact_text,
 )
 
 # transport(method, url, headers, body, timeout) -> (status_code, response_bytes).
@@ -33,6 +34,7 @@ class InworldProvider(TTSProvider):
     default_model = "inworld-tts-1.5-max"
     synth_url = "https://api.inworld.ai/tts/v1/voice"
     voices_url = "https://api.inworld.ai/voices/v1/voices"
+    supported_controls = frozenset({"speaking_rate", "temperature"})
 
     def __init__(
         self,
@@ -50,6 +52,7 @@ class InworldProvider(TTSProvider):
         self._transport = transport or _urllib_transport
 
     def synthesize(self, request: SynthesisRequest) -> SynthesisResult:
+        self.check_request(request)
         audio_config: dict[str, object] = {
             "audioEncoding": request.audio_encoding,
             "sampleRateHertz": request.sample_rate_hz,
@@ -71,11 +74,16 @@ class InworldProvider(TTSProvider):
         audio_content = data.get("audioContent")
         if not audio_content:
             raise ProviderError(f"Inworld response missing audioContent (keys: {sorted(data)})")
+        usage = data.get("usage", {}) or {}
         return SynthesisResult(
             audio=base64.b64decode(audio_content),
             audio_encoding=request.audio_encoding,
             sample_rate_hz=request.sample_rate_hz,
-            usage=data.get("usage", {}) or {},
+            usage=usage,
+            # Inworld reports the model that actually served the request; it can
+            # differ from the requested id when a model is routed or retired.
+            model_id=usage.get("modelId") or None,
+            request_sent=redact_text(payload),
         )
 
     def list_voices(self) -> list[Voice]:

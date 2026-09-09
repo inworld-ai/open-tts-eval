@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import io
 import json
 import random
 import re
@@ -10,9 +11,12 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+import soundfile as sf
+
 from tts_assess.io.manifest import ManifestItem
 from tts_assess.sampling.datasets import TextItem, load_texts
 from tts_assess.sampling.providers.base import (
+    ProviderError,
     SynthesisRequest,
     SynthesisResult,
     TTSProvider,
@@ -32,6 +36,10 @@ class SamplingConfig:
     temperature: float | None = None
     concurrency: int = 4
     overwrite: bool = False
+    # When the provider reports serving a different model than requested, the
+    # clip is an error by default: a run labelled with one model must not
+    # contain another's audio. Set to record such clips (with returned_model).
+    allow_model_mismatch: bool = False
 
 
 def resolve_voices(
@@ -84,6 +92,7 @@ def run_sampling(
     texts = load_texts(dataset_path, limit=limit)
     voice_ids = resolve_voices(provider, voices, num_voices, shuffle=shuffle_voices, seed=seed)
     specs = _model_specs(models, provider.default_model)
+    _require_distinct_run_dirs(provider, specs)
     extension = file_extension(provider.output_encoding(config.audio_encoding))
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -123,6 +132,21 @@ def _model_specs(
     return specs
 
 
+def _run_dir_name(provider: TTSProvider, label: str) -> str:
+    return _safe(f"{provider.name}-{label}")
+
+
+def _require_distinct_run_dirs(provider: TTSProvider, specs: list[tuple[str, str]]) -> None:
+    """Two labels must never share a run directory (e.g. ``org/a`` vs ``org:a``)."""
+    by_dir: dict[str, list[str]] = {}
+    for _api_id, label in specs:
+        by_dir.setdefault(_run_dir_name(provider, label), []).append(label)
+    clashes = {name: labels for name, labels in by_dir.items() if len(labels) > 1}
+    if clashes:
+        detail = "; ".join(f"{name!r} <- {labels}" for name, labels in clashes.items())
+        raise ValueError(f"model labels collide after filename sanitizing: {detail}")
+
+
 def _sample_model(
     provider: TTSProvider,
     model_id: str,
@@ -134,17 +158,18 @@ def _sample_model(
     config: SamplingConfig,
     progress_cb: ProgressCallback | None,
 ) -> dict[str, Any]:
-    run_dir = output_dir / _safe(f"{provider.name}-{label}")
+    run_dir = output_dir / _run_dir_name(provider, label)
     audio_dir = run_dir / "audio"
     audio_dir.mkdir(parents=True, exist_ok=True)
     manifest_path = run_dir / "manifest.jsonl"
     cached_rows = _load_cached_rows(manifest_path)
     tasks = [(text, voice) for text in texts for voice in voice_ids]
+    filenames = _unique_filenames([_sample_id(voice, text) for text, voice in tasks], extension)
 
     def worker(task: tuple[TextItem, str]) -> tuple[dict[str, Any] | None, dict[str, Any] | None]:
         text, voice = task
-        sample_id = f"{voice}__{text.id}"
-        filename = f"{_safe(sample_id)}.{extension}"
+        sample_id = _sample_id(voice, text)
+        filename = filenames[sample_id]
         audio_path = audio_dir / filename
         request = SynthesisRequest(
             text=text.text,
@@ -167,12 +192,14 @@ def _sample_model(
             result = provider.synthesize(request)
             if not result.audio:
                 raise ValueError("provider returned empty audio")
+            _check_returned_model(result, request, config)
         except Exception as exc:  # noqa: BLE001 - record and continue over the batch
             return None, {"id": sample_id, "voice": voice, "model": label, "error": str(exc)}
         audio_path.write_bytes(result.audio)
+        probe = _probe_audio(result.audio)
         return (
             _manifest_row(
-                text, voice, label, provider, filename, request, result, fingerprint
+                text, voice, label, provider, filename, request, result, fingerprint, probe
             ),
             None,
         )
@@ -189,9 +216,18 @@ def _sample_model(
                 progress_cb({"model": label, "ok": row is not None, "error": error})
 
     _write_manifest(manifest_path, rows)
+    returned_models = sorted(
+        {
+            str(row["metadata"]["returned_model"])
+            for row in rows
+            if row.get("metadata", {}).get("returned_model")
+        }
+    )
     meta = {
         "provider": provider.name,
         "model": label,
+        "api_model": model_id,
+        "returned_models": returned_models,
         "voices": voice_ids,
         "sample_count": len(rows),
         "error_count": len(errors),
@@ -209,6 +245,20 @@ def _sample_model(
     }
 
 
+def _sample_id(voice: str, text: TextItem) -> str:
+    return f"{voice}__{text.id}"
+
+
+def _check_returned_model(
+    result: SynthesisResult, request: SynthesisRequest, config: SamplingConfig
+) -> None:
+    if result.model_id and result.model_id != request.model_id and not config.allow_model_mismatch:
+        raise ProviderError(
+            f"provider served model {result.model_id!r} for requested {request.model_id!r}; "
+            "pass --allow-model-mismatch to keep such clips (recorded as returned_model)"
+        )
+
+
 def _manifest_row(
     text: TextItem,
     voice: str,
@@ -218,30 +268,51 @@ def _manifest_row(
     request: SynthesisRequest,
     result: SynthesisResult,
     fingerprint: str,
+    probe: dict[str, Any],
 ) -> dict[str, Any]:
     metadata: dict[str, Any] = {
         "provider": provider.name,
         "model": model,
         "voice": voice,
         "api_model": request.model_id,
+        "returned_model": result.model_id,
         "audio_encoding": result.audio_encoding,
-        "sample_rate_hz": result.sample_rate_hz,
+        # Actual container properties probed from the bytes (the provider's
+        # nominal rate is a fallback); requested_* record what was asked for.
+        "sample_rate_hz": probe.get("sample_rate_hz", result.sample_rate_hz),
+        "channels": probe.get("channels"),
+        "duration_sec": probe.get("duration_sec"),
         "requested_audio_encoding": request.audio_encoding,
         "requested_sample_rate_hz": request.sample_rate_hz,
         "speaking_rate": request.speaking_rate,
         "temperature": request.temperature,
+        "sent_request": result.request_sent,
         "source_text_id": text.id,
         "sampling_fingerprint": fingerprint,
     }
     if result.usage:
         metadata["provider_usage"] = result.usage
     return {
-        "id": f"{voice}__{text.id}",
+        "id": _sample_id(voice, text),
         "text": text.text,
         "audio_path": f"audio/{audio_filename}",
         "speaker_id": voice,
         "language": request.language or "en",
         "metadata": metadata,
+    }
+
+
+def _probe_audio(data: bytes) -> dict[str, Any]:
+    """Actual sample rate / channels / duration of the returned container, if decodable."""
+    try:
+        info = sf.info(io.BytesIO(data))
+    except Exception:
+        return {}
+    duration = info.frames / info.samplerate if info.samplerate else None
+    return {
+        "sample_rate_hz": int(info.samplerate),
+        "channels": int(info.channels),
+        "duration_sec": round(duration, 3) if duration is not None else None,
     }
 
 
@@ -297,6 +368,32 @@ def _cached_audio_matches(
         return audio_path.is_file() and audio_path.stat().st_size > 0
     except OSError:
         return False
+
+
+def _unique_filenames(sample_ids: Sequence[str], extension: str) -> dict[str, str]:
+    """Sanitized, collision-free audio file names, one per sample id.
+
+    Distinct ids that sanitize to the same name (``a/b`` and ``a:b``) would
+    otherwise overwrite each other's audio while both manifest rows point at
+    the survivor. Colliding groups get a short hash of the raw id appended.
+    """
+    duplicates = sorted({sid for sid in sample_ids if sample_ids.count(sid) > 1})
+    if duplicates:
+        raise ValueError(f"duplicate sample ids in this run: {duplicates[:5]}")
+    by_safe: dict[str, list[str]] = {}
+    for sample_id in sample_ids:
+        by_safe.setdefault(_safe(sample_id), []).append(sample_id)
+    names: dict[str, str] = {}
+    for safe, ids in by_safe.items():
+        if len(ids) == 1:
+            names[ids[0]] = f"{safe}.{extension}"
+            continue
+        for sample_id in ids:
+            suffix = hashlib.sha1(sample_id.encode("utf-8")).hexdigest()[:8]
+            names[sample_id] = f"{safe}-{suffix}.{extension}"
+    if len(set(names.values())) != len(names):
+        raise ValueError("could not derive unique audio file names for this run")
+    return names
 
 
 def _write_manifest(path: Path, rows: list[dict[str, Any]]) -> None:

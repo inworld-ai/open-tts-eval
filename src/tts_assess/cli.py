@@ -125,6 +125,12 @@ def sample(
     concurrency: int = typer.Option(4, "--concurrency"),
     limit: int | None = typer.Option(None, "--limit", help="Only sample the first N texts."),
     overwrite: bool = typer.Option(False, "--overwrite", help="Re-synthesize existing audio."),
+    allow_model_mismatch: bool = typer.Option(
+        False,
+        "--allow-model-mismatch",
+        help="Keep clips the provider reports as served by a different model than requested "
+        "(recorded as metadata.returned_model). By default they are logged as errors.",
+    ),
     api_key_file: Path | None = typer.Option(
         None, "--api-key-file", help="Read the API key from this file instead of the environment."
     ),
@@ -141,6 +147,7 @@ def sample(
         temperature=temperature,
         concurrency=concurrency,
         overwrite=overwrite,
+        allow_model_mismatch=allow_model_mismatch,
     )
     with Progress(transient=True, console=console) as progress:
         task = progress.add_task("Synthesizing", total=None)
