@@ -346,19 +346,18 @@ _PROVENANCE_FIELDS = ("code_hash", "plugin_hash", "normalization")
 def _evaluator_profile(rows: list[dict[str, Any]]) -> dict[str, set[Any]]:
     profile: dict[str, set[Any]] = {}
     for row in rows:
+        evaluator = row.get("evaluator")
+        if isinstance(evaluator, dict):
+            for field in _PROVENANCE_FIELDS:
+                if field in evaluator:
+                    value = evaluator[field]
+                    profile.setdefault(f"evaluator.{field}", set()).add(
+                        "none" if value is None else value
+                    )
         if measurement_failure(row) is not None:
             continue  # failed rows carry no ASR fields
         for field in _EVALUATOR_FIELDS:
             profile.setdefault(field, set()).add(row.get(field))
-        evaluator = row.get("evaluator")
-        if not isinstance(evaluator, dict):
-            continue
-        for field in _PROVENANCE_FIELDS:
-            if field in evaluator:
-                value = evaluator[field]
-                profile.setdefault(f"evaluator.{field}", set()).add(
-                    "none" if value is None else value
-                )
     return profile
 
 
