@@ -1,10 +1,21 @@
 from __future__ import annotations
 
+import math
 from typing import Any
 
 from tts_assess.reporting.stats import summarize_values
+from tts_assess.reporting.thresholds import (
+    METRIC_ERROR_KEYS,
+    failed_stages,
+    measurement_failure,
+)
 
 UNSPECIFIED_VOICE = "unspecified"
+
+# Rows sharing a text are not independent (same content, different voices), so
+# the bootstrap resamples texts as clusters. Falls back to i.i.d. automatically
+# when every row has a distinct text.
+CLUSTER_KEY = "text"
 
 
 def summarize(
@@ -48,16 +59,21 @@ def _group_summary(
 
     metric_summary: dict[str, Any] = {}
     for metric in _numeric_metric_names(rows):
-        values = [
-            float(row[metric])
-            for row in rows
-            if isinstance(row.get(metric), int | float) and not isinstance(row.get(metric), bool)
-        ]
+        measured = [row for row in rows if metric_value(row, metric) is not None]
+        values = [metric_value(row, metric) for row in measured]
+        clusters = [str(row.get(CLUSTER_KEY)) for row in measured]
         interval = summarize_values(
-            values, confidence=confidence_level, resamples=bootstrap_resamples
+            values,
+            confidence=confidence_level,
+            resamples=bootstrap_resamples,
+            clusters=clusters if any(clusters) else None,
         )
         metric_summary[metric] = {
             "count": interval["n"],
+            # Rows that attempted this metric's stage and errored (or never got
+            # that far). Shown next to the mean so a high score over few clips
+            # cannot masquerade as a healthy run.
+            "failed": sum(1 for row in rows if measurement_failure(row, metric) is not None),
             "mean": interval["mean"],
             "std": interval["std"],
             "median": interval["median"],
@@ -67,6 +83,7 @@ def _group_summary(
             "ci_low": interval["ci_low"],
             "ci_high": interval["ci_high"],
             "ci_level": interval["ci_level"],
+            "ci_method": interval["ci_method"],
         }
 
     return {
@@ -77,7 +94,27 @@ def _group_summary(
         "pass_rate": passed / total if total else 0.0,
         "metrics": metric_summary,
         "violations": _violation_counts(rows),
+        "measurement_failures": _measurement_failure_counts(rows),
     }
+
+
+def metric_value(row: dict[str, Any], metric: str) -> float | None:
+    """The row's finite numeric value for ``metric``, else None (bools excluded)."""
+    value = row.get(metric)
+    if isinstance(value, bool) or not isinstance(value, int | float):
+        return None
+    if not math.isfinite(float(value)):
+        return None
+    return float(value)
+
+
+def _measurement_failure_counts(rows: list[dict[str, Any]]) -> dict[str, int]:
+    """Rows per failed measurement stage (audio, asr, nisqa, ...)."""
+    counts: dict[str, int] = {}
+    for row in rows:
+        for stage in failed_stages(row):
+            counts[stage] = counts.get(stage, 0) + 1
+    return dict(sorted(counts.items(), key=lambda item: item[1], reverse=True))
 
 
 def _violation_counts(rows: list[dict[str, Any]]) -> dict[str, dict[str, int]]:
@@ -112,4 +149,9 @@ def _numeric_metric_names(rows: list[dict[str, Any]]) -> list[str]:
                 continue
             if isinstance(value, int | float) and not isinstance(value, bool):
                 names.add(key)
+        # A stage that failed on every row leaves no numeric value behind; still
+        # list its metrics so the report can show "0 measured, N failed".
+        for error_key, (_stage, metrics) in METRIC_ERROR_KEYS.items():
+            if row.get(error_key) is not None:
+                names.update(metrics)
     return sorted(names)

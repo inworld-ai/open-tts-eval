@@ -112,13 +112,21 @@ def _metric_table(table: dict[str, Any], labels: list[str]) -> str:
             name = f"{html.escape(row['metric'])}<span class='dir'>{arrow}</span>"
             cells = "".join(_metric_cell(c) for c in row["cells"])
             body.append(f"<tr><th class='rowhead'>{name}</th>{cells}</tr>")
+    method = (
+        "bootstrap over texts (clips sharing a text are resampled together)"
+        if table.get("ci_method") == "cluster"
+        else "bootstrap over clips"
+    )
     legend = (
         "<p class='legend'>Each cell: mean with "
-        f"{html.escape(ci_label)} below. "
+        f"{html.escape(ci_label)} below ({method}). "
         "<span class='chip best'></span> best &nbsp; "
         "<span class='chip worst'></span> worst &nbsp; "
-        "<span class='star'>*</span> interval does not overlap the best (↓/↑ = better "
-        "direction). The <i>Others</i> group is shown without best/worst colouring."
+        "<span class='star'>*</span> the paired per-text difference to the best run "
+        "excludes zero (↓/↑ = better direction). "
+        "<span class='cov'>n=…</span> marks a mean over fewer clips than the run has: "
+        "unmeasured clips are excluded from the mean, so read it with its coverage. "
+        "The <i>Others</i> group is shown without best/worst colouring."
         "</p>"
     )
     return (
@@ -128,9 +136,22 @@ def _metric_table(table: dict[str, Any], labels: list[str]) -> str:
     )
 
 
+def _coverage(cell: dict[str, Any]) -> str:
+    """'n=990/1000 · 10 failed' when a cell covers fewer clips than the run has."""
+    n = cell.get("n", cell.get("measured"))
+    total = cell.get("total")
+    failed = cell.get("failed") or 0
+    if n is None or total is None or (n == total and not failed):
+        return ""
+    text = f"n={n}/{total}"
+    if failed:
+        text += f" · {failed} failed"
+    return f"<span class='cov'>{html.escape(text)}</span>"
+
+
 def _metric_cell(cell: dict[str, Any]) -> str:
     if cell.get("na") or cell.get("mean") is None:
-        return "<td class='na'>—</td>"
+        return f"<td class='na'>—{_coverage(cell)}</td>"
     cls = "best" if cell.get("best") else ("worst" if cell.get("worst") else "")
     star = "<span class='star'>*</span>" if cell.get("sig") else ""
     ci = ""
@@ -138,7 +159,7 @@ def _metric_cell(cell: dict[str, Any]) -> str:
         ci = f"<span class='ci'>{_num(cell['lo'])}–{_num(cell['hi'])}</span>"
     return (
         f"<td class='{cls}'>"
-        f"<span class='val'>{_num(cell['mean'])}{star}</span>{ci}</td>"
+        f"<span class='val'>{_num(cell['mean'])}{star}</span>{ci}{_coverage(cell)}</td>"
     )
 
 
@@ -166,7 +187,9 @@ def _health_table(table: dict[str, Any], labels: list[str]) -> str:
         "<b>2 — per model:</b> each cell is the share of that model's clips that pass, graded "
         f"<span class='chip good'></span> good (≥{good}%) &nbsp; "
         f"<span class='chip warn'></span> warn (≥{warn}%) &nbsp; "
-        f"<span class='chip fail'></span> fail (&lt;{warn}%)."
+        f"<span class='chip fail'></span> fail (&lt;{warn}%). "
+        "A clip whose measurement failed (decode, ASR, or a model error) counts as not "
+        "passing; <span class='cov'>n=…</span> shows measured/total and failed counts."
         "</p>"
     )
     inner = (
@@ -182,7 +205,7 @@ def _health_cell(cell: dict[str, Any]) -> str:
     # One decimal, trimmed — so the shown % never contradicts its band at a
     # boundary (e.g. 79.9% fail must not display as "80% fail").
     pct = f"{cell['good_rate'] * 100:.1f}".rstrip("0").rstrip(".")
-    return f"<td class='{status}'><span class='val'>{pct}%</span></td>"
+    return f"<td class='{status}'><span class='val'>{pct}%</span>{_coverage(cell)}</td>"
 
 
 def _num(value: float) -> str:
@@ -213,6 +236,8 @@ tr.group th{text-align:left;background:#efefef;font-weight:700;text-transform:up
 td{vertical-align:middle}
 td .val{display:block;font-size:.95rem;font-weight:600;font-variant-numeric:tabular-nums;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
 td .ci{display:block;font-size:.62rem;color:var(--muted);margin-top:.1rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.cov{display:block;font-size:.62rem;color:#a33;margin-top:.1rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.legend .cov{display:inline}
 .star{color:#000;font-weight:700;margin-left:.1rem}
 td.na{color:#bbb}
 td.rule{text-align:left;color:var(--muted);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.8rem;white-space:nowrap}

@@ -74,6 +74,11 @@ class AssessmentConfig(StrictConfigModel):
                 "wer": BoundThreshold(warn=0.05, fail=0.10),
                 "cer": BoundThreshold(warn=0.03, fail=0.08),
                 "insertion_rate": BoundThreshold(warn=0.03, fail=0.08),
+                # Heuristic flags are hard failures; listing them here makes them
+                # visible in the health table and violations chapter like any metric.
+                "empty_transcript": BoundThreshold(fail_if_true=True),
+                "tail_hallucination": BoundThreshold(fail_if_true=True),
+                "repeated_span": BoundThreshold(fail_if_true=True),
                 "tail_click_detected": BoundThreshold(fail_if_true=True),
                 "clipping_ratio": BoundThreshold(warn=0.001, fail=0.01),
                 "silence_ratio": BoundThreshold(warn=0.45, fail=0.65),

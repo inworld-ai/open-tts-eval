@@ -7,13 +7,17 @@ from typing import Any
 
 
 def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
+    # allow_nan=False: NaN/Infinity are not JSON and would silently corrupt the
+    # canonical record. Upstream guards keep them out; this makes a slip loud.
     with path.open("w") as f:
         for row in rows:
-            f.write(json.dumps(row, default=str, ensure_ascii=False) + "\n")
+            f.write(json.dumps(row, default=str, ensure_ascii=False, allow_nan=False) + "\n")
 
 
 def write_summary(path: Path, summary: dict[str, Any]) -> None:
-    path.write_text(json.dumps(summary, indent=2, default=str, ensure_ascii=False))
+    path.write_text(
+        json.dumps(summary, indent=2, default=str, ensure_ascii=False, allow_nan=False)
+    )
 
 
 def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
