@@ -377,7 +377,10 @@ def _unique_filenames(sample_ids: Sequence[str], extension: str) -> dict[str, st
     otherwise overwrite each other's audio while both manifest rows point at
     the survivor. Colliding groups get a short hash of the raw id appended.
     """
-    duplicates = sorted({sid for sid in sample_ids if sample_ids.count(sid) > 1})
+    counts: dict[str, int] = {}
+    for sid in sample_ids:
+        counts[sid] = counts.get(sid, 0) + 1
+    duplicates = sorted([sid for sid, n in counts.items() if n > 1])
     if duplicates:
         raise ValueError(f"duplicate sample ids in this run: {duplicates[:5]}")
     by_safe: dict[str, list[str]] = {}
