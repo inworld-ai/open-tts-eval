@@ -1,7 +1,7 @@
 """Self-sufficient driver to sample all 6 benchmark models.
 
 Reproduces exactly the runs under ``out/multi/`` for the bundled dataset
-``data/inworld.tts.open_benchmak.en.json``:
+``data/inworld.tts.open_benchmark.en.json``:
 
     Inworld     : inworld-tts-2, inworld-tts-1.5-max, inworld-tts-1-max
     ElevenLabs  : eleven_v3, eleven_multilingual_v2
@@ -33,7 +33,7 @@ from tts_assess.sampling.providers import build_provider
 from tts_assess.sampling.sampler import SamplingConfig, run_sampling
 
 REPO = Path(__file__).resolve().parent.parent
-DATASET = REPO / "data" / "inworld.tts.open_benchmak.en.json"
+DATASET = REPO / "data" / "inworld.tts.open_benchmark.en.json"
 # Sample straight into the eval tree so each run dir ends up self-contained
 # (audio + manifest + results + report together, with relative audio paths).
 OUT = REPO / "out" / "eval_multi"

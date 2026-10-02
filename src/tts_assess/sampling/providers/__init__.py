@@ -9,6 +9,7 @@ from tts_assess.sampling.providers.base import (
     file_extension,
 )
 from tts_assess.sampling.providers.elevenlabs import ElevenLabsProvider
+from tts_assess.sampling.providers.gradium import GradiumProvider
 from tts_assess.sampling.providers.hume import HumeProvider
 from tts_assess.sampling.providers.inworld import InworldProvider
 
@@ -18,6 +19,7 @@ _PROVIDERS: dict[str, type[TTSProvider]] = {
         InworldProvider,
         ElevenLabsProvider,
         HumeProvider,
+        GradiumProvider,
     )
 }
 
@@ -38,6 +40,7 @@ def build_provider(name: str, api_key: str, **kwargs) -> TTSProvider:
 
 __all__ = [
     "ElevenLabsProvider",
+    "GradiumProvider",
     "HumeProvider",
     "InworldProvider",
     "ProviderError",

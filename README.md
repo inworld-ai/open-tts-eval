@@ -24,7 +24,7 @@
 > metrics and datasets can be added, and the toolkit can evaluate audio from other systems.
 >
 > The repository includes baseline metrics and a
-> [100-utterance dialogue stress set](data/inworld.tts.open_benchmak.en.json) that concentrates
+> [100-utterance dialogue stress set](data/inworld.tts.open_benchmark.en.json) that concentrates
 > difficult cases into a small test run.
 >
 > To try it, ask your coding agent to clone this repository and evaluate a model. The repository
@@ -32,7 +32,7 @@
 
 The evaluation core runs offline and does not depend on internal infrastructure or datasets. The
 optional [sampling subsystem](#sampling-generating-audio-to-evaluate) is the only component that
-calls public provider APIs (Inworld, ElevenLabs, and Hume).
+calls public provider APIs (Inworld, ElevenLabs, Hume, and Gradium).
 
 ## What It Does
 
@@ -101,9 +101,9 @@ Speaker similarity runs only when `reference_audio_path` exists and the similari
 ## Sampling (generating audio to evaluate)
 
 The `tts_assess.sampling` subsystem synthesizes a text dataset with prebuilt provider voices and
-writes manifests this toolkit can evaluate directly. It ships with **Inworld**, **ElevenLabs**, and
-**Hume** backends and is provider-pluggable (add a `TTSProvider` subclass under
-`sampling/providers/`).
+writes manifests this toolkit can evaluate directly. It ships with **Inworld**, **ElevenLabs**,
+**Hume**, and [**Gradium**](https://gradium.ai/) backends and is provider-pluggable (add a
+`TTSProvider` subclass under `sampling/providers/`).
 
 Each provider reads its API key from an environment variable (or a file via `--api-key-file`).
 The default env var is `INWORLD_API_KEY`; override per provider with `--api-key-env`:
@@ -116,20 +116,27 @@ export ELEVENLABS_API_KEY=...
 tts-assess voices --provider elevenlabs --api-key-env ELEVENLABS_API_KEY
 # ...or read the key from a file instead of the environment:
 tts-assess voices --provider hume --api-key-file ~/hume_key.txt
+
+tts-assess voices --provider gradium --api-key-env GRADIUM_API_KEY
 ```
 
 Sample a dataset with chosen voices and models:
 
 ```bash
-tts-assess sample data/inworld.tts.open_benchmak.en.json \
+tts-assess sample data/inworld.tts.open_benchmark.en.json \
   --provider inworld \
   --voice Ashley --voice Sarah \
   --model inworld-tts-2 --model inworld-tts-1.5-max \
   --language en-US --format WAV --sample-rate 24000 \
   --output-dir out/samples
+
+tts-assess sample data/inworld.tts.open_benchmark.en.json \
+  --provider gradium --api-key-env GRADIUM_API_KEY \
+  --model default --voice YTpq7expH9539ERJ \
+  --sample-rate 48000 --output-dir out/samples
 ```
 
-`data/inworld.tts.open_benchmak.en.json` is the bundled English benchmark: 100 short,
+`data/inworld.tts.open_benchmark.en.json` is the bundled English benchmark: 100 short,
 dialogue-style utterances with a realistic mix of lengths, punctuation, names, numbers, and
 stage-direction/OCR noise, for stress-testing TTS on messy input.
 
@@ -170,6 +177,7 @@ cannot transmit rather than recording a setting the audio was not produced with:
 | `inworld` | sent | sent | sent |
 | `elevenlabs` | sent as `voice_settings.speed` | rejected | sent as `language_code` only for models that enforce it (`eleven_turbo_v2_5`, `eleven_flash_v2_5`) |
 | `hume` | sent as utterance `speed` | rejected | not supported by the API |
+| `gradium` | rejected | sent as `json_config.temp` (0–1.5) | not sent; the chosen voice determines the language |
 
 Hume requests always pin `version` (`octave-1` → `1`, `octave-2` → `2`); an omitted version would
 let the API choose the model.
@@ -187,6 +195,9 @@ tts-assess run out/samples/inworld-inworld-tts-1.5-max/manifest.jsonl \
 tts-assess compare out/samples/inworld-inworld-tts-2 out/samples/inworld-inworld-tts-1.5-max \
   --label "TTS 2" --label "TTS 1.5 Max" -o out/comparison
 ```
+
+Gradium uses its [REST API](https://docs.gradium.ai/guides/text-to-speech-rest) and
+returns native 48 kHz WAV audio; the adapter rewrites the streaming header with the real length.
 
 WAV output is the default because the evaluator decodes audio with `soundfile`; other encodings
 (`MP3`, `FLAC`, `OGG_OPUS`, …) are available but may not be readable by every audio metric.

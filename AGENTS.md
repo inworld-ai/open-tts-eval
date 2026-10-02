@@ -37,6 +37,7 @@ The CLI entry point is `tts-assess` (module `tts_assess.cli`). Commands: `sample
 | `inworld` | `INWORLD_API_KEY` | `inworld-tts-1.5-max` | also `inworld-tts-2`, `inworld-tts-1-max`, `inworld-tts-1` |
 | `elevenlabs` | `ELEVENLABS_API_KEY` | `eleven_multilingual_v2` | `eleven_v3`, `eleven_turbo_v2_5` |
 | `hume` | `HUME_API_KEY` | `octave-2` | `octave-1`; sits behind Cloudflare (a UA is set for you) |
+| `gradium` | `GRADIUM_API_KEY` | `default` | native 48 kHz WAV; voice UID; no `--speaking-rate` |
 
 Provide the key with `--api-key-env NAME` (reads that env var) or `--api-key-file PATH`. List a
 provider's prebuilt voices:
@@ -53,7 +54,7 @@ Synthesize a text dataset with chosen voices/models. One run directory per model
 `<provider>-<model>`, each holding `audio/`, `manifest.jsonl`, `sampling_meta.json`.
 
 ```bash
-tts-assess sample data/inworld.tts.open_benchmak.en.json \
+tts-assess sample data/inworld.tts.open_benchmark.en.json \
   --provider inworld --api-key-file ~/inworld.key \
   --model inworld-tts-2 --model inworld-tts-1.5-max \
   --voice Ashley --voice Sarah --voice Oliver \
@@ -78,7 +79,7 @@ reports as served by another model; by default they are errors).
 
 - Datasets: `.txt` (one utterance/line), `.json`/`.jsonl` (objects or bare strings with a `text`
   field; optional `id`, `language`), or `.csv` with a `text` column. Bundled benchmark:
-  `data/inworld.tts.open_benchmak.en.json` (100 messy dialogue utterances).
+  `data/inworld.tts.open_benchmark.en.json` (100 messy dialogue utterances).
 - Audio is **cached by existence** — re-running resumes; dead keys / quota caps are logged per
   sample and skipped (the run continues). Here "cached by existence" also requires a non-empty
   file and a matching full-request fingerprint; older unfingerprinted rows are refreshed once.
@@ -225,10 +226,10 @@ src/tts_assess/
   sampling/
     datasets.py                # .txt/.json/.jsonl/.csv loaders
     sampler.py                 # run_sampling: texts × voices × models → manifests (+ model aliases)
-    providers/                 # base.py + inworld.py / elevenlabs.py / hume.py (+ _http.py)
+    providers/                 # base.py + inworld.py / elevenlabs.py / hume.py / gradium.py (+ _http.py)
 scripts/sample_multi.py        # reproducible multi-provider sampling
 scripts/eval_multi.py          # evaluate all runs in place + build compare_all
-data/…open_benchmak.en.json    # bundled benchmark dataset
+data/…open_benchmark.en.json   # bundled benchmark dataset
 out/eval_multi/                # example evaluated runs + compare_all report (audio git-ignored);
                                # stamped with their evaluator — regenerate when measurement code changes
 ```

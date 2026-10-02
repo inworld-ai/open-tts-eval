@@ -5,8 +5,8 @@ config, metric glossary, repo map, and gotchas. Quick reference below.
 
 ## The three workflows
 ```bash
-# 1. Sample audio from a provider (inworld | elevenlabs | hume)
-tts-assess sample data/inworld.tts.open_benchmak.en.json -p inworld \
+# 1. Sample audio from a provider (inworld | elevenlabs | hume | gradium)
+tts-assess sample data/inworld.tts.open_benchmark.en.json -p inworld \
   --api-key-file ~/inworld.key --model inworld-tts-2 --voice Ashley --voice Sarah -o out/samples
 
 # 2. Evaluate a manifest INTO ITS OWN DIR (keeps audio+report together, relative paths)

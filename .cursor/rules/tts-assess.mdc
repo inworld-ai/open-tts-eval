@@ -7,7 +7,7 @@ alwaysApply: true
 Read **AGENTS.md** in the repo root for the full guide (sample / evaluate / report workflows,
 config, metric glossary, repo map, gotchas). Essentials:
 
-- CLI `tts-assess`: `sample` (synthesize from inworld|elevenlabs|hume), `run` (evaluate a manifest),
+- CLI `tts-assess`: `sample` (synthesize from inworld|elevenlabs|hume|gradium), `run` (evaluate a manifest),
   `compare` (cross-run report), `voices`, `init-config`, `preview`.
 - **Three-step flow:** `sample <dataset> -p <provider> --api-key-file KEY --model M --voice V -o out/samples`
   → `run out/samples/<provider>-<model>/manifest.jsonl -c eval.yml -o <same dir>` (eval in place →
